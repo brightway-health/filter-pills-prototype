@@ -1,145 +1,78 @@
+var eventHub = new Vue();
+
+var filters = [
+    { i: 1, s: true, t: "memory loss", c: "symptoms" },
+    { i: 2, s: true, t: "balance", c: "symptoms" },
+    { i: 3, s: true, t: "vision", c: "symptoms" },
+    { i: 4, s: true, t: "routine", c: "symptoms" },
+    { i: 5, s: true, t: "physical", c: "therapy" },
+    { i: 6, s: true, t: "emotional", c: "therapy" },
+    { i: 7, s: true, t: "occupational", c: "therapy" },
+    { i: 8, s: false, t: "recretional", c: "therapy" },
+    { i: 9, s: false, t: "mild", c: "injury" },
+    { i: 10, s: true, t: "moderate", c: "injury" },
+    { i: 11, s: false, t: "severe", c: "injury" },
+    { i: 12, s: false, t: "drugs", c: "symptoms" },
+];
+
+
+var filterStore = Vue.observable({
+    filters: filters.map(function (v) { return { ...v } }),
+});
+
+var filterActions = {
+    toggleFilter: function (id) {
+        for (i in filterStore.filters) {
+            var filterId = filterStore.filters[i].i;
+            if (filterId === id) {
+                filterStore.filters[i].s = !filterStore.filters[i].s;
+            }
+        }
+    },
+    resetFilters: function () {
+        filterStore.filters = filters.map(function (v) { return {...v} });
+        eventHub.$emit('load');
+    },
+    clearFilters: function () {
+        filterStore.filters = filters.map(function (f) {
+            return { ...f, s: false };
+        });
+        eventHub.$emit('load');
+    },
+};
+
+Vue.prototype.$store = filterStore;
+Vue.prototype.$actions = filterActions;
+
 /**
  * Filter list component
  */
 var filterListTemplate = '<div class="filter">\
 <ul class="selected">\
-<li v-for="(filter, i) in list" v-on:click="remove(i)">{{ filter }}</li>\
-<li v-on:click="showAdd"><span v-if="list.length === 0">Add Filters </span>+</li>\
+<li v-for="filter in filters" v-on:click="clickFilter(filter.i)" :class="{ active: filter.s }">{{ filter.t }}</li>\
 </ul>\
 <br class="clr" />\
 </div>';
 
-var filters = {
-    symptomFilters: ["memory loss", "balance", "vision", "routine"],
-    typeFilters: ["physical", "emotional", "occupational", "recretional"],
-    injuryFilters: ["mild", "moderate", "severe"]
-};
-
-var eventHub = new Vue();
-
 Vue.component("filter-list", {
-    props: ["filters", "name"],
-    data: function () {
-        return {
-            value: null,
-            list: [],
-        };
+    props: ["name"],
+    computed: {
+        filters: function () {
+            return this.$store.filters.filter(function (v) {
+                return v.c === this.name;
+            }.bind(this))
+        }
     },
     template: filterListTemplate,
-    created: function () {
-        eventHub.$on('modal-save', function (e) {
-            if (e.name == this.name) {
-                this.list = this.list.concat(e.selected)
-                this.loadFn()
-            }
-        }.bind(this))
-
-        eventHub.$on('reset-filters', function () {
-            this.list = [...this.filters]
-            this.loadFn()
-        }.bind(this))
-
-        eventHub.$on('clear-filters', function () {
-            this.list = []
-            this.loadFn()
-        }.bind(this))
-
-        this.list = [...this.filters]
-    },
     methods: {
-        remove: function (i) {
-            this.list.splice(i, 1);
-            this.loadFn()
-        },
-        showAdd: function () {
-            eventHub.$emit("modal-open", { name: this.name });
+        clickFilter: function (id) {
+            console.log('hr');
+            this.$actions.toggleFilter(id);
+            this.loadFn();
         },
         loadFn: function () {
-            this.$emit("load");
+            eventHub.$emit("load");
         }
-    }
-});
-
-/**
- * Model component
- */
-var modalTemplate = '<div v-show="open" class="modal-wrap">\
-<div class="bg" v-on:click="closeModal"></div>\
-<div class="modal"><h4>Add Filters</h4>\
-<div class="search">Search: <input type="text" v-model="search" /></div>\
-<ul class="list"><li v-for="(filter, i) in filters" v-on:click="selectFilter(i)" :class="{ selected: filter.selected }" v-if="search === null || search === \'\' || filter.text.toLowerCase().includes(search.toLowerCase())">{{filter.text}}</li></ul>\
-<br class="clr" />\
-<div class="btn-wrap">\
-<button class="btn save" @click="closeModal">Save</button>\
-</div>\
-</div>\
-</div>';
-
-var possibleFilters = [
-    { selected: false, text: "Lorem" },
-    { selected: false, text: "ipsum" },
-    { selected: false, text: "dolor" },
-    { selected: false, text: "sit" },
-    { selected: false, text: "amet" },
-    { selected: false, text: "consectetur" },
-    { selected: false, text: "adipiscing" },
-    { selected: false, text: "elit" },
-    { selected: false, text: "Vivamus" },
-    { selected: false, text: "mattis" },
-    { selected: false, text: "lectus" },
-    { selected: false, text: "id" },
-    { selected: false, text: "auctor" },
-    { selected: false, text: "vestibulum" },
-    { selected: false, text: "dui" },
-    { selected: false, text: "elit" },
-    { selected: false, text: "interdum" },
-    { selected: false, text: "elit" },
-    { selected: false, text: "eu" },
-    { selected: false, text: "euismod" },
-    { selected: false, text: "quam" },
-    { selected: false, text: "mauris" },
-    { selected: false, text: "sed" },
-    { selected: false, text: "magna" },
-    { selected: false, text: "Nulla" },
-];
-
-var modalComponent = Vue.component("modal", {
-    props: ["filters"],
-    template: modalTemplate,
-    data: function () {
-        return {
-            open: false,
-            name: null,
-            search: null,
-        };
-    },
-    created: function () {
-        eventHub.$on("modal-open", this.openModal);
-        eventHub.$on("modal-close", this.closeModal);
-    },
-    methods: {
-        openModal: function (e) {
-            this.filters = this.filters.map(function (filter) {
-                return { ...filter, selected: false };
-            })
-            this.search = null;
-            this.open = true;
-            this.name = e.name;
-        },
-        closeModal: function () {
-            this.open = false;
-            eventHub.$emit("modal-save", {
-                selected: this.filters.filter(function (filter) {
-                    return filter.selected
-                }).map(function (filter) {
-                    return filter.text;
-                }),
-                name: this.name,
-            })
-        },
-        selectFilter: function (i) {
-            this.filters[i].selected = !this.filters[i].selected;
-        },
     }
 });
 
@@ -151,11 +84,9 @@ let app = new Vue({
     data: {
         loading: true,
         results: 84,
-        possibleFilters: possibleFilters,
-        filters: filters,
         showFilters: {
             symptoms: false,
-            types: false,
+            therapy: false,
             injury: false
         }
     },
@@ -167,9 +98,8 @@ let app = new Vue({
             }.bind(this),
             500
         );
-    },
-    methods: {
-        load: function () {
+
+        eventHub.$on('load', function () {
             this.loading = true;
             setTimeout(
                 function () {
@@ -178,15 +108,17 @@ let app = new Vue({
                 }.bind(this),
                 500
             );
-        },
+        }.bind(this));
+    },
+    methods: {
         toggleFilter: function (filterName) {
             this.showFilters[filterName] = !this.showFilters[filterName];
         },
         resetFilters: function () {
-            eventHub.$emit('reset-filters')
+            this.$actions.resetFilters();
         },
         clearFilters: function () {
-            eventHub.$emit('clear-filters')
+            this.$actions.clearFilters();
         }
     }
 });

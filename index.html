@@ -6,13 +6,12 @@
 
 <body>
     <div id="container">
-        <modal :filters="possibleFilters"></modal>
         <div id="col1">
             <h1>Filters</h1>
 
             <div class="controlBtns">
-                <a @click="resetFilters">Reset to My Tags</a>
-                <a @click="clearFilters">Clear Filters</a>
+                <a @click="$actions.resetFilters">Reset to My Tags</a>
+                <a @click="$actions.clearFilters">Clear Filters</a>
                 <br class="clr" />
             </div>
 
@@ -20,23 +19,23 @@
                 <h4 @click="toggleFilter('symptoms')"><span class="left">Symptoms & Daily Life</span> <span
                         v-if="showFilters.symptoms" class="right">v</span><span v-if="!showFilters.symptoms"
                         class="right">^</span></h4>
-                <filter-list v-show="showFilters.symptoms" :name="'symptoms'" :filters="filters.symptomFilters" @load="load"></filter-list>
+                <filter-list v-show="showFilters.symptoms" :name="'symptoms'"></filter-list>
             </div>
             <div class="filter-box">
-                <h4 @click="toggleFilter('types')"><span class="left">Type of therapy</span> <span class="right"
-                        v-if="showFilters.types">v</span><span class="right" v-if="!showFilters.types">^</span></h4>
-                <filter-list v-show="showFilters.types" :name="'types'" :filters="filters.typeFilters" @load="load"></filter-list>
+                <h4 @click="toggleFilter('therapy')"><span class="left">Type of therapy</span> <span class="right"
+                        v-if="showFilters.therapy">v</span><span class="right" v-if="!showFilters.therapy">^</span></h4>
+                <filter-list v-show="showFilters.therapy" :name="'therapy'"></filter-list>
             </div>
             <div class="filter-box">
                 <h4 @click="toggleFilter('injury')"><span class="left">Type of injury</span> <span
                         v-if="showFilters.injury" class="right">v</span><span v-if="!showFilters.injury"
                         class="right">^</span></h4>
-                <filter-list v-show="showFilters.injury" :name="'injury'" :filters="filters.injuryFilters" @load="load"></filter-list>
+                <filter-list v-show="showFilters.injury" :name="'injury'"></filter-list>
             </div>
         </div>
         <div id="col2">
             <h1>All Questions</h1>
-            <div v-if="loading" v-on:load="load">
+            <div v-if="loading">
                 <h3>Loading...</h3>
             </div>
             <div v-if="!loading">
