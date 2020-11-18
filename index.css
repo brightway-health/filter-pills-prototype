@@ -1,0 +1,192 @@
+body,
+html {
+  font-family: Helvetica, sans-serif;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+#container {
+  height: 100%;
+}
+
+#col1 {
+  background-color: #ddd;
+  padding: 15px;
+  box-sizing: border-box;
+  float: left;
+  width: 33%;
+  height: 100%;
+}
+
+#col2 {
+  float: left;
+  width: 66%;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+.left { float: left; }
+.right { float: right; }
+
+.clr {
+  clear: both;
+  height: 0;
+  width: 0;
+  line-height: 0;
+}
+
+.filter-box {
+  background-color: #eee;
+  margin: 5px 0;
+}
+
+.filter-box h4 {
+  margin: 0;
+  padding: 10px 20px;
+  width: 100%;
+  height: 2.4em;
+  box-sizing: border-box
+}
+
+.filter-box h4:hover {
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.filter {
+  padding: 0 0 10px;
+}
+
+.filter ul.selected {
+  margin: 0 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.filter ul.selected li {
+  float: left;
+  margin: 2px 5px;
+  padding: 3px 8px;
+  border-radius: 8px;
+  background-color: #aaa;
+}
+
+.filter ul.selected li:hover {
+  background-color: #f99;
+  cursor: pointer;
+}
+
+.filter .filter-input {
+  margin-top: 10px;
+  width: 100%;
+  padding: 3px 10px;
+  box-sizing: border-box;
+  border: 0;
+}
+
+.modal-wrap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.modal-wrap .bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-wrap .modal {
+  position: absolute;
+  width: 50%;
+  top: 25%;
+  left: 25%;
+  background-color: #fff;
+  z-index: 1001;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modal-wrap .modal h4 {
+  margin: 0 0 1em;
+}
+
+.modal-wrap .modal .search {
+  margin-bottom: 10px;
+}
+
+.modal-wrap .modal .search input {
+  width: 30%;
+}
+
+.modal-wrap .modal .list {
+  margin: 0;
+  margin-left: -5px;
+  padding: 0;
+  list-style: none;
+}
+
+.modal-wrap .modal .list li {
+    float: left;
+  margin: 2px 5px;
+  padding: 3px 8px;
+  border-radius: 8px;
+  background-color: #aaa;
+}
+
+.modal-wrap .modal .list li:hover {
+  background-color: #999;
+  cursor: pointer;
+}
+
+.modal-wrap .modal .list li.selected {
+  background-color: #ddd;
+}
+
+.modal-wrap .modal .list li.selected:hover {
+  background-color: #ccc;
+}
+
+.modal-wrap .modal .btn.save {
+  margin-left: 90%;
+  margin-top: 20px;
+  border: 0;
+  font-weight: bold;
+  padding: 10px;
+  background-color: #ddd;
+}
+
+.modal-wrap .modal .btn.save:hover {
+  cursor: pointer;
+  background-color: #ccc;
+}
+
+.controlBtns {
+  margin: 20px 10px;
+}
+
+.controlBtns a {
+  float: left;
+  color: blue;
+  font-weight: bold;
+}
+
+.controlBtns a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.controlBtns a + a {
+  float: right;
+}
