@@ -1,8 +1,8 @@
 /**
  * Filter list component
  */
-var filterListTemplate =
-  '<div class="filter"><ul class="selected">\
+var filterListTemplate = '<div class="filter">\
+<ul class="selected">\
 <li v-for="(filter, i) in list" v-on:click="remove(i)">{{ filter }}</li>\
 <li v-on:click="showAdd"><span v-if="list.length === 0">Add Filters </span>+</li>\
 </ul>\
