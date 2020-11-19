@@ -66,7 +66,6 @@ Vue.component("filter-list", {
     template: filterListTemplate,
     methods: {
         clickFilter: function (id) {
-            console.log('hr');
             this.$actions.toggleFilter(id);
             this.loadFn();
         },
@@ -77,6 +76,71 @@ Vue.component("filter-list", {
 });
 
 /**
+ * Question template
+ */
+
+ var questions = [
+    {
+        user: 'derby100',
+        votes: 203,
+        type: 'caregiver',
+        date: 'Oct 28',
+        title: 'Can anyone recommend a neurologist with brain injury experience in Chicago?',
+        text: "My dad's been dealing with seizures and I think he's on too many meds. The facility he's at won't adjust anything until he sees a neurologist.",
+        tags: [ 'neurologists', 'chicago ' ],
+        answers: 2,
+        upvotes: 24,
+    },
+    {
+        user: 'kawther81',
+        votes: 582,
+        type: 'survivor',
+        date: 'Oct 26',
+        title: 'Anyone have experience with Vielight Neuro for PBM? Is it worth the price?',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin commodo, mi non sodales congue, mauris.',
+        tags: [ 'photobiomodulation', ],
+        answers: 8,
+        upvotes: 36,
+    },
+    {
+        user: 'baseball99',
+        votes: 1043,
+        type: 'caregiver',
+        date: 'Oct 28',
+        title: 'Do you know a physical therapist with stroke experience in Los Angeles?',
+        text: "My dad's been dealing with seizures and I think he's on too many meds. The facility he's at won't adjust anything until he sees a neurologist.",
+        tags: [ 'neurologists', 'chicago ' ],
+        answers: 2,
+        upvotes: 207,
+    },
+ ];
+
+ var questionTemplate = '<div class="question-wrap">\
+ <div class="upvotes" @click="alert(\'Not in Prototype\')">\
+ <img src="like.svg" width="32" />\
+ <p class="votes">{{question.upvotes}}</p>\
+ </div>\
+ <div class="question-right">\
+ <div class="question">\
+ <div class="details">\
+ <div class="left"><a class="question-user" @click="alert(\'Not in Prototype\')">{{question.user}}</a> <span class="question-votes">({{question.votes}} votes)</span><span class="user-type">{{question.type}}</span></div>\
+ <div class="right">{{question.date}}<img src="kebab.svg" class="question-kebab" height="14" style="margin-left: 15px" @click="alert(\'Not in Prototype\')" /></div>\
+ <br class="clr" /></div>\
+ <h2 @click="alert(\'Not in Prototype\')">{{question.title}}</h2>\
+ <p class="question-text">{{question.text}}</p>\
+ <div class="tags"><a v-for="tag in question.tags" @click="alert(\'Not in Prototype\')">{{tag}}</a></div>\
+ </div>\
+ <div class="answers"><a class="left" @click="alert(\'Not in Prototype\')">Show 2 answers</a><a class="right" @click="alert(\'Not in Prototype\')">+ Write an answer</a><br class="clr" /></div>\
+ </div>\
+ <br class="clr" />\
+ </div>';
+
+Vue.component('question', {
+    props: ['question'],
+    template: questionTemplate,
+});
+
+/**
  * Main app
  */
 let app = new Vue({
@@ -84,10 +148,52 @@ let app = new Vue({
     data: {
         loading: true,
         results: 84,
+        showSidebar: false,
+        questions: questions,
         showFilters: {
             symptoms: false,
             therapy: false,
             injury: false
+        }
+    },
+    computed: {
+        filtersSelected: function () {
+            var reducer = function (type) {
+                return function (total, filter) {
+                    if (filter.c === type && filter.s) {
+                        return total + 1;
+                    }
+
+                    return total;
+                }
+            }
+
+            return {
+                total: filterStore.filters.reduce(function (total, filter) {
+                    if (filter.s) {
+                        return total + 1;
+                    }
+
+                    return total;
+                }, 0),
+                symptoms: filterStore.filters.reduce(reducer('symptoms'), 0),
+                therapy: filterStore.filters.reduce(reducer('therapy'), 0),
+                injury: filterStore.filters.reduce(reducer('injury'), 0),
+            }
+        },
+        myTagsSelected: function () {
+            var same = true;
+            for (n in filterStore.filters) {
+                var curFilter = filterStore.filters[n];
+                var origFilter = filters[n];
+                console.log(curFilter.s, origFilter.s);
+
+                if (curFilter.s !== origFilter.s) {
+                    same = false;
+                }
+            }
+
+            return same;
         }
     },
     created: function () {
@@ -111,6 +217,9 @@ let app = new Vue({
         }.bind(this));
     },
     methods: {
+        toggleSidebar: function () {
+            this.showSidebar = !this.showSidebar;
+        },
         toggleFilter: function (filterName) {
             this.showFilters[filterName] = !this.showFilters[filterName];
         },

@@ -6,46 +6,81 @@
 
 <body>
     <div id="container">
-        <div id="col1">
-            <h1>Filters</h1>
-
+        <div id="col1" v-show="showSidebar">
+            <a class="hide-filters" @click="toggleSidebar">Hide filters &raquo;</a>
             <div class="controlBtns">
-                <a @click="$actions.resetFilters">Reset to My Tags</a>
-                <a @click="$actions.clearFilters">Clear Filters</a>
+                <span class="left" v-if="myTagsSelected">My Tags Selected</span>
+                <a @click="$actions.resetFilters" class="left" v-if="!myTagsSelected">Reset to My Tags</a>
+                <a @click="$actions.clearFilters" class="right">Clear Filters</a>
                 <br class="clr" />
             </div>
 
             <div class="filter-box">
-                <h4 @click="toggleFilter('symptoms')"><span class="left">Symptoms & Daily Life</span> <span
-                        v-if="showFilters.symptoms" class="right">v</span><span v-if="!showFilters.symptoms"
-                        class="right">^</span></h4>
+                <h4 @click="toggleFilter('symptoms')"><div>
+                    <span class="left">Symptoms & daily life</span>
+                    <span class="right">
+                        <span class="weak filter-count">{{filtersSelected.symptoms}} selected</span>
+                        <span v-if="showFilters.symptoms">v</span>
+                        <span v-if="!showFilters.symptoms">^</span>
+                    </span>
+                    <br class="clr" />
+                </h4>
                 <filter-list v-show="showFilters.symptoms" :name="'symptoms'"></filter-list>
             </div>
             <div class="filter-box">
-                <h4 @click="toggleFilter('therapy')"><span class="left">Type of therapy</span> <span class="right"
-                        v-if="showFilters.therapy">v</span><span class="right" v-if="!showFilters.therapy">^</span></h4>
+                <h4 @click="toggleFilter('therapy')">
+                    <span class="left">Type of therapy</span>
+                    <span class="right">
+                        <span class="weak filter-count">{{filtersSelected.therapy}} selected</span>
+                        <span v-if="showFilters.therapy">v</span>
+                        <span v-if="!showFilters.therapy">^</span>
+                    </span>
+                    <br class="clr" />
+                    </h4>
                 <filter-list v-show="showFilters.therapy" :name="'therapy'"></filter-list>
             </div>
             <div class="filter-box">
-                <h4 @click="toggleFilter('injury')"><span class="left">Type of injury</span> <span
-                        v-if="showFilters.injury" class="right">v</span><span v-if="!showFilters.injury"
-                        class="right">^</span></h4>
+                <h4 @click="toggleFilter('injury')">
+                    <span class="left">Type of injury</span>
+                    <span class="right">
+                        <span class="weak filter-count">{{filtersSelected.injury}} selected</span>
+                        <span v-if="showFilters.injury">v</span>
+                        <span v-if="!showFilters.injury">^</span>
+                    </span>
+                    <br class="clr" />
+                </h4>
                 <filter-list v-show="showFilters.injury" :name="'injury'"></filter-list>
             </div>
         </div>
         <div id="col2">
-            <h1>All Questions</h1>
-            <div v-if="loading">
-                <h3>Loading...</h3>
+            <div id="header">
+                <h1>LOGO</h1>
+                <div id="header-pills">
+                    <a class="pill" id="header-search" @click="alert('Not in Prototype')"><img src="loupe.svg" height="16" style="margin: 0 8px 0 0" />Search</a>
+                    <a class="pill" id="header-ask" @click="alert('Not in Prototype')"><img src="plus.svg" height="16"  style="margin: 0 8px 0 0" />Ask a Question</a>
+                    <a id="header-menu" @click="alert('Not in Prototype')"><img src="menu.png" height="16" style="margin: 0 8px 0 0" />Menu</a>
+                </div>
+                <br class="clr" />
             </div>
-            <div v-if="!loading">
-                <h3>{{ results }} questions</h3>
-                <ul id="results_list">
-                    <li>How do I?</li>
-                    <li>Really?</li>
-                    <li>Are you sure?</li>
-                    <li>What's it all about?</li>
-                </ul>
+            <div id="questions">
+                <h1>All Questions</h1>
+                <div id="question-nav">
+                    <a class="pill" id="open-filter-btn" @click="toggleSidebar"><img src="filter.svg" height="16" style="margin: 0 8px 0 0" />Filter questions &ndash; <span class="weak">{{filtersSelected.total}} selected</span></a>
+                    <a class="pill" id="sort-questions-btn" @click="alert('Not in prototype')">Sort By: <span class="weak">Relevance</span><img src="down-arrow.svg" height="16" style="margin: 0 0 0 8px" /></a>
+                    <h3 class="question-count">
+                        <span v-if="loading">-</span>
+                        <span v-if="!loading">{{ results }} questions</span>
+                    </h3>
+                    <br class="clr" />
+                </div>
+                <div id="question-list">
+                    <div v-if="loading">
+                        <h3>Loading...</h3>
+                    </div>
+                    <div v-if="!loading">
+                        <question v-for="question in questions" :question="question"></question>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
