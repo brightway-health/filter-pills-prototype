@@ -13,8 +13,11 @@ var filters = [
     { i: 10, s: true, t: "moderate", c: "injury" },
     { i: 11, s: false, t: "severe", c: "injury" },
     { i: 12, s: false, t: "drugs", c: "symptoms" },
+    { i: 13, s: true, t: "survivor", c: "user" },
+    { i: 14, s: false, t: "caregiver", c: "user" },
+    { i: 15, s: false, t: "medical provider", c: "user" },
+    { i: 16, s: false, t: "researcher", c: "user" },
 ];
-
 
 var filterStore = Vue.observable({
     filters: filters.map(function (v) { return { ...v } }),
@@ -149,11 +152,20 @@ let app = new Vue({
         loading: true,
         results: 84,
         showSidebar: false,
+        showMoreFilters: false,
         questions: questions,
         showFilters: {
             symptoms: false,
             therapy: false,
-            injury: false
+            injury: false,
+            user: false,
+            years: false,
+            location: false,
+            financial: false,
+            recovery: false,
+            nutrition: false,
+            medications: false,
+            legal: false,
         }
     },
     computed: {
@@ -179,6 +191,14 @@ let app = new Vue({
                 symptoms: filterStore.filters.reduce(reducer('symptoms'), 0),
                 therapy: filterStore.filters.reduce(reducer('therapy'), 0),
                 injury: filterStore.filters.reduce(reducer('injury'), 0),
+                user: filterStore.filters.reduce(reducer('user'), 0),
+                years: filterStore.filters.reduce(reducer('years'), 0),
+                location: filterStore.filters.reduce(reducer('location'), 0),
+                financial: filterStore.filters.reduce(reducer('financial'), 0),
+                recovery: filterStore.filters.reduce(reducer('recovery'), 0),
+                nutrition: filterStore.filters.reduce(reducer('nutrition'), 0),
+                medications: filterStore.filters.reduce(reducer('medications'), 0),
+                legal: filterStore.filters.reduce(reducer('legal'), 0),
             }
         },
         myTagsSelected: function () {

@@ -19,6 +19,12 @@ html {
   width: 30%;
   height: 100%;
   position: fixed;
+  overflow: auto;
+  scrollbar-width: none;
+}
+
+#col1::-webkit-scrollbar {
+    display: none;
 }
 
 #col2 {
@@ -418,5 +424,22 @@ html {
 .hide-filters:hover {
     text-decoration: underline;
     color: #000;
+    cursor: pointer;
+}
+
+#more-filter-toggle {
+    margin: 20px 0;
+}
+
+#more-filter-toggle a {
+    display: block;
+    width: 100%;
+    text-align: center;
+    color: blue;
+    font-weight: bold;
+}
+
+#more-filter-toggle a:hover {
+    text-decoration: underline;
     cursor: pointer;
 }

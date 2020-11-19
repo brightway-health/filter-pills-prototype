@@ -9,7 +9,7 @@
         <div id="col1" v-show="showSidebar">
             <a class="hide-filters" @click="toggleSidebar">Hide filters &raquo;</a>
             <div class="controlBtns">
-                <span class="left" v-if="myTagsSelected">My Tags Selected</span>
+                <span class="left" v-if="myTagsSelected">My Tags are Selected</span>
                 <a @click="$actions.resetFilters" class="left" v-if="!myTagsSelected">Reset to My Tags</a>
                 <a @click="$actions.clearFilters" class="right">Clear Filters</a>
                 <br class="clr" />
@@ -50,6 +50,111 @@
                     <br class="clr" />
                 </h4>
                 <filter-list v-show="showFilters.injury" :name="'injury'"></filter-list>
+            </div>
+
+            <div class="filter-box">
+                <h4 @click="toggleFilter('user')">
+                    <span class="left">User type</span>
+                    <span class="right">
+                        <span class="weak filter-count">{{filtersSelected.user}} selected</span>
+                        <span v-if="showFilters.user">v</span>
+                        <span v-if="!showFilters.user">^</span>
+                    </span>
+                    <br class="clr" />
+                </h4>
+                <filter-list v-show="showFilters.user" :name="'user'"></filter-list>
+            </div>
+            <div class="filter-box">
+                <h4 @click="toggleFilter('years')">
+                    <span class="left">Years after injury</span>
+                    <span class="right">
+                        <span class="weak filter-count">{{filtersSelected.years}} selected</span>
+                        <span v-if="showFilters.years">v</span>
+                        <span v-if="!showFilters.years">^</span>
+                    </span>
+                    <br class="clr" />
+                </h4>
+                <filter-list v-show="showFilters.years" :name="'years'"></filter-list>
+            </div>
+            <div class="filter-box">
+                <h4 @click="toggleFilter('location')">
+                    <span class="left">Location</span>
+                    <span class="right">
+                        <span class="weak filter-count">{{filtersSelected.location}} selected</span>
+                        <span v-if="showFilters.location">v</span>
+                        <span v-if="!showFilters.location">^</span>
+                    </span>
+                    <br class="clr" />
+                </h4>
+                <filter-list v-show="showFilters.location" :name="'location'"></filter-list>
+            </div>
+
+            <div id="more-filter-toggle">
+                <a v-if="!showMoreFilters" @click="showMoreFilters = true">v Show more filters v</a>
+                <a v-if="showMoreFilters" @click="showMoreFilters = false">^ Show less filters ^</a>
+            </div>
+
+            <div id="more-filters" v-show="showMoreFilters">
+                <div class="filter-box">
+                    <h4 @click="toggleFilter('financial')">
+                        <span class="left">Financial</span>
+                        <span class="right">
+                            <span class="weak filter-count">{{filtersSelected.financial}} selected</span>
+                            <span v-if="showFilters.financial">v</span>
+                            <span v-if="!showFilters.financial">^</span>
+                        </span>
+                        <br class="clr" />
+                    </h4>
+                    <filter-list v-show="showFilters.financial" :name="'financial'"></filter-list>
+                </div>
+                <div class="filter-box">
+                    <h4 @click="toggleFilter('recovery')">
+                        <span class="left">Stage of recovery</span>
+                        <span class="right">
+                            <span class="weak filter-count">{{filtersSelected.recovery}} selected</span>
+                            <span v-if="showFilters.recovery">v</span>
+                            <span v-if="!showFilters.recovery">^</span>
+                        </span>
+                        <br class="clr" />
+                    </h4>
+                    <filter-list v-show="showFilters.recovery" :name="'recovery'"></filter-list>
+                </div>
+                <div class="filter-box">
+                    <h4 @click="toggleFilter('nutrition')">
+                        <span class="left">Nutrition</span>
+                        <span class="right">
+                            <span class="weak filter-count">{{filtersSelected.nutrition}} selected</span>
+                            <span v-if="showFilters.nutrition">v</span>
+                            <span v-if="!showFilters.nutrition">^</span>
+                        </span>
+                        <br class="clr" />
+                    </h4>
+                    <filter-list v-show="showFilters.nutrition" :name="'nutrition'"></filter-list>
+                </div>
+                <div class="filter-box">
+                    <h4 @click="toggleFilter('medications')">
+                        <span class="left">Medications</span>
+                        <span class="right">
+                            <span class="weak filter-count">{{filtersSelected.medications}} selected</span>
+                            <span v-if="showFilters.medications">v</span>
+                            <span v-if="!showFilters.medications">^</span>
+                        </span>
+                        <br class="clr" />
+                    </h4>
+                    <filter-list v-show="showFilters.medications" :name="'medications'"></filter-list>
+                </div>
+                <div class="filter-box">
+                    <h4 @click="toggleFilter('legal')">
+                        <span class="left">Legal</span>
+                        <span class="right">
+                            <span class="weak filter-count">{{filtersSelected.legal}} selected</span>
+                            <span v-if="showFilters.legal">v</span>
+                            <span v-if="!showFilters.legal">^</span>
+                        </span>
+                        <br class="clr" />
+                    </h4>
+                    <filter-list v-show="showFilters.legal" :name="'legal'"></filter-list>
+                </div>
             </div>
         </div>
         <div id="col2">
