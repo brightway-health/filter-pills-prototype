@@ -413,7 +413,7 @@ html {
 }
 
 .hide-filters {
-    color: #444;
+    color: blue;
     font-weight: bold;
     width: 100%;
     display: block;
