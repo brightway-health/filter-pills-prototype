@@ -1,3 +1,4 @@
+Vue.component('vue-slider', window['vue-slider-component']);
 var eventHub = new Vue();
 
 var filters = [
@@ -151,9 +152,10 @@ let app = new Vue({
     data: {
         loading: true,
         results: 84,
-        showSidebar: false,
+        showSidebar: true, // TODO - switch back to false
         showMoreFilters: false,
         questions: questions,
+        sliderValue: [0, 11],
         showFilters: {
             symptoms: false,
             therapy: false,
@@ -187,7 +189,7 @@ let app = new Vue({
                     }
 
                     return total;
-                }, 0),
+                }, 0) + (this.yearsChanged ? 1 : 0),
                 symptoms: filterStore.filters.reduce(reducer('symptoms'), 0),
                 therapy: filterStore.filters.reduce(reducer('therapy'), 0),
                 injury: filterStore.filters.reduce(reducer('injury'), 0),
@@ -206,14 +208,20 @@ let app = new Vue({
             for (n in filterStore.filters) {
                 var curFilter = filterStore.filters[n];
                 var origFilter = filters[n];
-                console.log(curFilter.s, origFilter.s);
 
                 if (curFilter.s !== origFilter.s) {
                     same = false;
                 }
             }
 
+            if (this.yearsChanged) {
+                same = false;
+            }
+
             return same;
+        },
+        yearsChanged: function () {
+            return this.sliderValue[0] != 0 || this.sliderValue[1] != 11;
         }
     },
     created: function () {
@@ -245,9 +253,14 @@ let app = new Vue({
         },
         resetFilters: function () {
             this.$actions.resetFilters();
+            this.sliderValue = [0, 11];
         },
         clearFilters: function () {
             this.$actions.clearFilters();
+            this.sliderValue = [0, 11];
+        },
+        loadFn: function () {
+            eventHub.$emit("load");
         }
     }
 });

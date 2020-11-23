@@ -1,11 +1,17 @@
 body,
 html {
   font-family: Helvetica, sans-serif;
-  padding: 0;
+  padding: 0 14px 0 0;
   margin: 0;
   height: 100%;
   background-color: #ddd;
+  /* scrollbar-width: 14px; */
 }
+
+/* ::-webkit-scrollbar {
+    width: 14px;
+    height: 100%;
+} */
 
 #container {
   height: 100%;
@@ -86,6 +92,10 @@ html {
 
 #questions {
     padding: 50px 10%;
+}
+
+#question-loading {
+    height: 100%;
 }
 
 #question-nav {
@@ -443,3 +453,11 @@ html {
     text-decoration: underline;
     cursor: pointer;
 }
+
+.year-filter-wrap {
+    padding: 15px 60px 12px 53px;
+}
+
+/* .year-filter-wrap .vue-slider-dot-tooltip {
+    visibility: visible;
+} */

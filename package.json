@@ -1,0 +1,12 @@
+{
+  "name": "filter-pills",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:brightway-health/filter-pills-prototype.git",
+  "author": "George Yates <me@georgeyatesiii.com>",
+  "license": "None",
+  "private": true,
+  "dependencies": {
+    "vue-slider-component": "^3.2.11"
+  }
+}
