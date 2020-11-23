@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@trevoreyre/autocomplete-vue@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@trevoreyre/autocomplete-vue/-/autocomplete-vue-2.2.0.tgz#db1fd94bc001ccba296cdd370fdae122117b311e"
+  integrity sha512-A5j986nM6htTbCpEW9BbwlqCobIMD4+uicAYGCSI8DM1ojK8meCyVI23jK+gAxi+vjhraCBneKI+vbwB8sL0ig==
+
 core-js@^3.6.5:
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.7.0.tgz#b0a761a02488577afbf97179e4681bf49568520f"

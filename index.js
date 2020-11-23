@@ -1,23 +1,69 @@
 Vue.component('vue-slider', window['vue-slider-component']);
+Vue.component('v-autocomplete', window['Autocomplete']);
 var eventHub = new Vue();
 
 var filters = [
     { i: 1, s: true, t: "memory loss", c: "symptoms" },
     { i: 2, s: true, t: "balance", c: "symptoms" },
-    { i: 3, s: true, t: "vision", c: "symptoms" },
-    { i: 4, s: true, t: "routine", c: "symptoms" },
+    { i: 3, s: false, t: "vision", c: "symptoms" },
+    { i: 4, s: false, t: "routine", c: "symptoms" },
     { i: 5, s: true, t: "physical therapy", c: "therapy" },
-    { i: 6, s: true, t: "emotional therapy", c: "therapy" },
-    { i: 7, s: true, t: "occupational therapy", c: "therapy" },
+    { i: 6, s: true, t: "occupational therapy", c: "therapy" },
+    { i: 7, s: false, t: "emotional therapy", c: "therapy" },
     { i: 8, s: false, t: "recretional therapy", c: "therapy" },
     { i: 9, s: false, t: "mild", c: "injury" },
-    { i: 10, s: true, t: "moderate", c: "injury" },
+    { i: 10, s: false, t: "moderate", c: "injury" },
     { i: 11, s: false, t: "severe", c: "injury" },
     { i: 12, s: false, t: "drugs", c: "symptoms" },
-    { i: 13, s: true, t: "survivor", c: "user" },
+    { i: 13, s: false, t: "survivor", c: "user" },
     { i: 14, s: false, t: "caregiver", c: "user" },
     { i: 15, s: false, t: "medical provider", c: "user" },
     { i: 16, s: false, t: "researcher", c: "user" },
+    { i: 17, s: false, t: "employment", c: "symptoms" },
+    { i: 18, s: false, t: "emotional control", c: "symptoms" },
+    { i: 19, s: false, t: "cognitive therapy", c: "therapy" },
+    { i: 20, s: false, t: "medicare", c: "financial" },
+    { i: 21, s: false, t: "medicaid", c: "financial" },
+    { i: 22, s: false, t: "non profit assistance", c: "financial" },
+    { i: 23, s: false, t: "insurance", c: "financial" },
+    { i: 24, s: false, t: "out-of-pocket", c: "financial" },
+    { i: 25, s: false, t: "billing", c: "financial" },
+    { i: 26, s: false, t: "inpatient", c: "recovery" },
+    { i: 27, s: false, t: "outpatient", c: "recovery" },
+    { i: 28, s: false, t: "independent", c: "recovery" },
+    { i: 29, s: false, t: "fully recovered", c: "recovery" },
+    { i: 30, s: false, c: "nutrition", t: "omega-3" },
+    { i: 31, s: false, c: "nutrition", t: "alcohol" },
+    { i: 32, s: false, c: "nutrition", t: "weight loss" },
+    { i: 33, s: false, c: "nutrition", t: "strength gain" },
+    { i: 34, s: true, c: "medications", t: "ibuprofen" },
+    { i: 35, s: false, c: "medications", t: "noopept" },
+    { i: 36, s: false, c: "medications", t: "modafinal" },
+    { i: 37, s: false, c: "medications", t: "l-theanine" },
+    { i: 38, s: false, c: "legal", t: "lawsuit" },
+    { i: 39, s: false, c: "legal", t: "settlement" },
+    { i: 40, s: false, c: "legal", t: "lawyer" },
+    { i: 41, s: false, c: "legal", t: "liability" },
+    { i: 42, s: false, t: "sex & relationships", c: "symptoms" },
+];
+
+var locations = [
+    'Austin, TX',
+    'Buffalo, NY',
+    'Chicago, IL',
+    'Dallas, TX',
+    'Evanston, IL',
+    'Houston, TX',
+    'Los Angeles, CA',
+    'New York, NY',
+    'Rochester, NY',
+    'Sacramento, CA',
+    'San Diego, CA',
+    'Springfield, IL',
+    'California',
+    'Illinois',
+    'New York',
+    'Texas',
 ];
 
 var filterStore = Vue.observable({
@@ -152,10 +198,11 @@ let app = new Vue({
     data: {
         loading: true,
         results: 84,
-        showSidebar: true, // TODO - switch back to false
+        showSidebar: false,
         showMoreFilters: false,
         questions: questions,
         sliderValue: [0, 11],
+        location: null,
         showFilters: {
             symptoms: false,
             therapy: false,
@@ -189,7 +236,9 @@ let app = new Vue({
                     }
 
                     return total;
-                }, 0) + (this.yearsChanged ? 1 : 0),
+                }, 0)
+                    + (this.yearsChanged ? 1 : 0)
+                    + (this.locationSelected ? 1 : 0),
                 symptoms: filterStore.filters.reduce(reducer('symptoms'), 0),
                 therapy: filterStore.filters.reduce(reducer('therapy'), 0),
                 injury: filterStore.filters.reduce(reducer('injury'), 0),
@@ -218,10 +267,17 @@ let app = new Vue({
                 same = false;
             }
 
+            if (this.location !== null) {
+                same = false;
+            }
+
             return same;
         },
         yearsChanged: function () {
             return this.sliderValue[0] != 0 || this.sliderValue[1] != 11;
+        },
+        locationSelected: function () {
+            return this.location !== null;
         }
     },
     created: function () {
@@ -254,13 +310,33 @@ let app = new Vue({
         resetFilters: function () {
             this.$actions.resetFilters();
             this.sliderValue = [0, 11];
+            this.clearLocation();
         },
         clearFilters: function () {
             this.$actions.clearFilters();
             this.sliderValue = [0, 11];
+            this.clearLocation();
+        },
+        clearLocation: function () {
+            this.location = null;
+            this.$refs.locationField.setValue(undefined);
+            this.loadFn();
         },
         loadFn: function () {
             eventHub.$emit("load");
-        }
+        },
+        locationSearch: function (val) {
+            return locations.filter(function (location) {
+                return location.toLowerCase().startsWith(val.toLowerCase());
+            });
+        },
+        locationSubmit: function (v) {
+            this.loadFn();
+            if (v === '' || typeof v === 'undefined') {
+                this.location = null;
+            } else {
+                this.location = v;
+            }
+        },
     }
 });

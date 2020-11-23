@@ -1,8 +1,9 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="index.css" />
     <link rel="stylesheet" href="node_modules/vue-slider-component/theme/default.css" />
+    <link rel="stylesheet" href="node_modules/@trevoreyre/autocomplete-vue/dist/style.css" />
+    <link rel="stylesheet" href="index.css" />
 </head>
 
 <body>
@@ -91,13 +92,20 @@
                 <h4 @click="toggleFilter('location')">
                     <span class="left">Location</span>
                     <span class="right">
-                        <span class="weak filter-count">{{filtersSelected.location}} selected</span>
+                        <span class="weak filter-count" v-if="!locationSelected">Not filtered</span>
+                        <span class="weak filter-count" v-if="locationSelected">Filtered</span>
                         <span v-if="showFilters.location">v</span>
                         <span v-if="!showFilters.location">^</span>
                     </span>
                     <br class="clr" />
                 </h4>
-                <filter-list v-show="showFilters.location" :name="'location'"></filter-list>
+                <div v-show="showFilters.location" class="location-filter-wrap">
+                    <div :class="{'location-auto-wrap': true, active: locationSelected}">
+                        <v-autocomplete :search="locationSearch" @submit="locationSubmit" ref="locationField" placeholder="Search for a city or state"></v-autocomplete>
+                    </div>
+                    <a v-if="locationSelected" class="location-clear" @click="clearLocation">X</a>
+                    <br class="clr" />
+                </div>
             </div>
 
             <div id="more-filter-toggle">
@@ -202,6 +210,7 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js" type="text/javascript"></script>
     <script src="node_modules/vue-slider-component/dist/vue-slider-component.umd.js" type="text/javascript"></script>
+    <script src="node_modules/@trevoreyre/autocomplete-vue/dist/autocomplete.min.js" type="text/javascript"></script>
     <script src="index.js" type="text/javascript"></script>
 </body>
 

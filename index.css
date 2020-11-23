@@ -458,6 +458,33 @@ html {
     padding: 15px 60px 12px 53px;
 }
 
-/* .year-filter-wrap .vue-slider-dot-tooltip {
-    visibility: visible;
-} */
+.location-filter-wrap {
+    padding: 10px 25px 10px;
+}
+
+.location-filter-wrap input {
+    background-color: #ddd;
+}
+
+.location-filter-wrap .location-auto-wrap.active {
+    float: left;
+    width: 88%;
+}
+
+.location-filter-wrap .location-clear {
+    float: right;
+    display: block;
+    width: 10%;
+    padding: 12px 0;
+    box-sizing: border-box;
+    color: blue;
+    font-weight: bold;
+    font-size: 1.4em;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.location-filter-wrap .location-clear:hover {
+    background: #fff;
+    cursor: pointer;
+}
