@@ -23,7 +23,7 @@
                 <h4 @click="toggleFilter('symptoms')"><div>
                     <span class="left">Symptoms & daily life</span>
                     <span class="right">
-                        <span class="weak filter-count">{{filtersSelected.symptoms}} selected</span>
+                        <span class="weak filter-count" v-if="filtersSelected.symptoms > 0">{{filtersSelected.symptoms}} selected</span>
                         <span v-if="showFilters.symptoms">v</span>
                         <span v-if="!showFilters.symptoms">^</span>
                     </span>
@@ -35,7 +35,7 @@
                 <h4 @click="toggleFilter('therapy')">
                     <span class="left">Type of therapy</span>
                     <span class="right">
-                        <span class="weak filter-count">{{filtersSelected.therapy}} selected</span>
+                        <span class="weak filter-count" v-if="filtersSelected.therapy > 0">{{filtersSelected.therapy}} selected</span>
                         <span v-if="showFilters.therapy">v</span>
                         <span v-if="!showFilters.therapy">^</span>
                     </span>
@@ -47,7 +47,7 @@
                 <h4 @click="toggleFilter('injury')">
                     <span class="left">Type of injury</span>
                     <span class="right">
-                        <span class="weak filter-count">{{filtersSelected.injury}} selected</span>
+                        <span class="weak filter-count" v-if="filtersSelected.injury > 0">{{filtersSelected.injury}} selected</span>
                         <span v-if="showFilters.injury">v</span>
                         <span v-if="!showFilters.injury">^</span>
                     </span>
@@ -60,7 +60,7 @@
                 <h4 @click="toggleFilter('user')">
                     <span class="left">User type</span>
                     <span class="right">
-                        <span class="weak filter-count">{{filtersSelected.user}} selected</span>
+                        <span class="weak filter-count" v-if="filtersSelected.user > 0">{{filtersSelected.user}} selected</span>
                         <span v-if="showFilters.user">v</span>
                         <span v-if="!showFilters.user">^</span>
                     </span>
@@ -72,8 +72,7 @@
                 <h4 @click="toggleFilter('years')">
                     <span class="left">Years after injury</span>
                     <span class="right">
-                        <span class="weak filter-count" v-if="!yearsChanged">Not filtered</span>
-                        <span class="weak filter-count" v-if="yearsChanged">Filtered</span>
+                        <span class="weak filter-count" v-if="yearsChanged">{{sliderValue[0]}} - {{sliderValue[1] == 11 ? '10+' : sliderValue[1]}} years</span>
                         <span v-if="showFilters.years">v</span>
                         <span v-if="!showFilters.years">^</span>
                     </span>
@@ -94,8 +93,7 @@
                 <h4 @click="toggleFilter('location')">
                     <span class="left">Location</span>
                     <span class="right">
-                        <span class="weak filter-count" v-if="!locationSelected">Not filtered</span>
-                        <span class="weak filter-count" v-if="locationSelected">Filtered</span>
+                        <span class="weak filter-count" v-if="filtersSelected.location > 0">{{filtersSelected.location}} selected</span>
                         <span v-if="showFilters.location">v</span>
                         <span v-if="!showFilters.location">^</span>
                     </span>
@@ -120,7 +118,7 @@
                     <h4 @click="toggleFilter('financial')">
                         <span class="left">Financial</span>
                         <span class="right">
-                            <span class="weak filter-count">{{filtersSelected.financial}} selected</span>
+                            <span class="weak filter-count" v-if="filtersSelected.financial > 0">{{filtersSelected.financial}} selected</span>
                             <span v-if="showFilters.financial">v</span>
                             <span v-if="!showFilters.financial">^</span>
                         </span>
@@ -132,7 +130,7 @@
                     <h4 @click="toggleFilter('recovery')">
                         <span class="left">Stage of recovery</span>
                         <span class="right">
-                            <span class="weak filter-count">{{filtersSelected.recovery}} selected</span>
+                            <span class="weak filter-count" v-if="filtersSelected.recovery > 0">{{filtersSelected.recovery}} selected</span>
                             <span v-if="showFilters.recovery">v</span>
                             <span v-if="!showFilters.recovery">^</span>
                         </span>
@@ -144,7 +142,7 @@
                     <h4 @click="toggleFilter('nutrition')">
                         <span class="left">Nutrition</span>
                         <span class="right">
-                            <span class="weak filter-count">{{filtersSelected.nutrition}} selected</span>
+                            <span class="weak filter-count" v-if="filtersSelected.nutrition > 0">{{filtersSelected.nutrition}} selected</span>
                             <span v-if="showFilters.nutrition">v</span>
                             <span v-if="!showFilters.nutrition">^</span>
                         </span>
@@ -156,7 +154,7 @@
                     <h4 @click="toggleFilter('medications')">
                         <span class="left">Medications</span>
                         <span class="right">
-                            <span class="weak filter-count">{{filtersSelected.medications}} selected</span>
+                            <span class="weak filter-count" v-if="filtersSelected.medications > 0">{{filtersSelected.medications}} selected</span>
                             <span v-if="showFilters.medications">v</span>
                             <span v-if="!showFilters.medications">^</span>
                         </span>
@@ -168,7 +166,7 @@
                     <h4 @click="toggleFilter('legal')">
                         <span class="left">Legal</span>
                         <span class="right">
-                            <span class="weak filter-count">{{filtersSelected.legal}} selected</span>
+                            <span class="weak filter-count" v-if="filtersSelected.legal > 0">{{filtersSelected.legal}} selected</span>
                             <span v-if="showFilters.legal">v</span>
                             <span v-if="!showFilters.legal">^</span>
                         </span>
