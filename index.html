@@ -100,10 +100,15 @@
                     <br class="clr" />
                 </h4>
                 <div v-show="showFilters.location" class="location-filter-wrap">
-                    <div :class="{'location-auto-wrap': true, active: locationSelected}">
-                        <v-autocomplete :search="locationSearch" @submit="locationSubmit" ref="locationField" placeholder="Search for a city or state"></v-autocomplete>
+                    <div class="filter location-filter">
+                        <ul class="selected">
+                            <li v-for="location in locations" v-on:click="location.s = !location.s; loadFn();" :class="{ active: location.s }">{{ location.t }}</li>
+                        </ul>
+                        <br class="clr" />
                     </div>
-                    <a v-if="locationSelected" class="location-clear" @click="clearLocation">X</a>
+                    <div class="location-auto-wrap">
+                        <v-autocomplete :search="locationSearch" @submit="locationSubmit" ref="locationField" placeholder="Add more cities or states"></v-autocomplete>
+                    </div>
                     <br class="clr" />
                 </div>
             </div>

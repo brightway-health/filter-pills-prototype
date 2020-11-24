@@ -1,5 +1,6 @@
 Vue.component('vue-slider', window['vue-slider-component']);
 Vue.component('v-autocomplete', window['Autocomplete']);
+var defaultLocations = [ { t: 'New York, NY', s: false }, { t: 'New York', s: false } ];
 var eventHub = new Vue();
 
 var filters = [
@@ -56,7 +57,7 @@ var locations = [
     'Evanston, IL',
     'Houston, TX',
     'Los Angeles, CA',
-    'New York, NY',
+    // 'New York, NY',
     'Minneapolis, MN',
     'Philadelphia, PA',
     'Pittsburgh, PA',
@@ -68,7 +69,7 @@ var locations = [
     'California',
     'Illinois',
     'Minnesota',
-    'New York',
+    // 'New York',
     'Pennsylvania',
     'Texas',
 ];
@@ -209,7 +210,7 @@ let app = new Vue({
         showMoreFilters: false,
         questions: questions,
         sliderValue: [0, 11],
-        location: null,
+        locations: defaultLocations.map(function (v) { return { ...v } }),
         showFilters: {
             symptoms: false,
             therapy: false,
@@ -245,13 +246,13 @@ let app = new Vue({
                     return total;
                 }, 0)
                     + (this.yearsChanged ? 1 : 0)
-                    + (this.locationSelected ? 1 : 0),
+                    + this.locations.filter(function (l) { return l.s; }).length,
                 symptoms: filterStore.filters.reduce(reducer('symptoms'), 0),
                 therapy: filterStore.filters.reduce(reducer('therapy'), 0),
                 injury: filterStore.filters.reduce(reducer('injury'), 0),
                 user: filterStore.filters.reduce(reducer('user'), 0),
                 years: filterStore.filters.reduce(reducer('years'), 0),
-                location: filterStore.filters.reduce(reducer('location'), 0),
+                location: this.locations.filter(function (l) { return l.s; }).length,
                 financial: filterStore.filters.reduce(reducer('financial'), 0),
                 recovery: filterStore.filters.reduce(reducer('recovery'), 0),
                 nutrition: filterStore.filters.reduce(reducer('nutrition'), 0),
@@ -274,8 +275,20 @@ let app = new Vue({
                 same = false;
             }
 
-            if (this.location !== null) {
-                same = false;
+            for (l in this.locations) {
+                var sameL = false;
+                var location = this.locations[l];
+                for (i in defaultLocations) {
+                    var defaultLocation = defaultLocations[i];
+
+                    if (location.t === defaultLocation.t && location.s === defaultLocation.s) {
+                        sameL = true;
+                    }
+                }
+
+                if (sameL === false) {
+                    same = false;
+                }
             }
 
             return same;
@@ -283,9 +296,6 @@ let app = new Vue({
         yearsChanged: function () {
             return this.sliderValue[0] != 0 || this.sliderValue[1] != 11;
         },
-        locationSelected: function () {
-            return this.location !== null;
-        }
     },
     created: function () {
         setTimeout(
@@ -317,17 +327,12 @@ let app = new Vue({
         resetFilters: function () {
             this.$actions.resetFilters();
             this.sliderValue = [0, 11];
-            this.clearLocation();
+            this.locations = defaultLocations.map(function (v) { return { ...v } });
         },
         clearFilters: function () {
             this.$actions.clearFilters();
             this.sliderValue = [0, 11];
-            this.clearLocation();
-        },
-        clearLocation: function () {
-            this.location = null;
-            this.$refs.locationField.setValue(undefined);
-            this.loadFn();
+            this.locations = defaultLocations.map(function (v) { return { ...v } });
         },
         loadFn: function () {
             eventHub.$emit("load");
@@ -338,12 +343,18 @@ let app = new Vue({
             });
         },
         locationSubmit: function (v) {
-            this.loadFn();
-            if (v === '' || typeof v === 'undefined') {
-                this.location = null;
-            } else {
-                this.location = v;
+            if (v !== '' && typeof v !== 'undefined') {
+                this.locations.push({ t: v, s: true });
+                this.loadFn();
             }
+
+            this.$refs.locationField.setValue(undefined);
+            for (let e of this.$refs.locationField.$el.children[0].children) {
+                if (e.tagName === 'INPUT') {
+                    e.blur();
+                }
+            }
+            // this.$refs.locationField.$el.children[0].children[0].blur();
         },
     }
 });

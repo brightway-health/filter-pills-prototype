@@ -489,3 +489,11 @@ html {
     background: #fff;
     cursor: pointer;
 }
+
+.filter.location-filter {
+    margin: 0;
+}
+
+.filter.location-filter ul.selected {
+    margin: 0;
+}
