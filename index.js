@@ -358,3 +358,24 @@ let app = new Vue({
         },
     }
 });
+
+function repositionColumns() {
+    var col2 = document.getElementById('col2');
+    var placeholder = document.getElementById('col2-placeholder');
+    var placeholderRect = placeholder.getBoundingClientRect();
+
+    col2.style.width = placeholderRect.width;
+    col2.style.left = placeholderRect.left;
+    console.log(placeholder.getBoundingClientRect());
+}
+
+document.onreadystatechange = function (e) {
+    if (document.readyState === 'complete') {
+        repositionColumns();
+        // col2.setAttribute('right', placeholder.)
+    }
+}
+
+window.addEventListener('resize', function () {
+    repositionColumns();
+});

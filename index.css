@@ -1,10 +1,11 @@
 body,
 html {
   font-family: Helvetica, sans-serif;
-  padding: 0 14px 0 0;
+  padding: 0;
   margin: 0;
   height: 100%;
-  background-color: #ddd;
+  width: 100%;
+  background-color: #bbb;
   /* scrollbar-width: 14px; */
 }
 
@@ -15,32 +16,12 @@ html {
 
 #container {
   height: 100%;
+  width: 1200px;
+  max-width: 98%;
+  margin: 0 auto;
   background-color: #ddd;
 }
 
-#col1 {
-  background-color: #ddd;
-  padding: 40px 0;
-  box-sizing: border-box;
-  width: 30%;
-  height: 100%;
-  position: fixed;
-  overflow: auto;
-  scrollbar-width: none;
-}
-
-#col1::-webkit-scrollbar {
-    display: none;
-}
-
-#col2 {
-  width: 900px;
-  max-width: 65%;
-  box-sizing: border-box;
-  margin: 0 5% 0 30%;
-  background-color: #fff;
-  min-height: 100%;
-}
 
 #header {
     background-color: #666;
@@ -49,6 +30,11 @@ html {
     padding: 14px 30px;
     width: 100%;
     margin: 0;
+    position: fixed;
+    top: 0;
+    width: 1200px;
+    max-width: 98%;
+    z-index: 100;
 }
 
 #header h1 {
@@ -90,8 +76,44 @@ html {
     color: #ddd;
 }
 
+#col-container {
+    min-height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 68px;
+}
+
+#col1 {
+    background-color: #eee;
+    padding: 40px 0;
+    box-sizing: border-box;
+    flex: 2;
+}
+
+#col2-placeholder {
+    background-color: #ddd;
+    flex: 1;
+}
+
+#col2 {
+    position: fixed;
+    box-sizing: border-box;
+    top: 0;
+    background-color: #ddd;
+    overflow: auto;
+    height: 100%;
+    padding-top: 68px;
+    z-index: 50;
+    width: 32.6667%;
+}
+
+#col2::-webkit-scrollbar {
+    display: none;
+}
+
 #questions {
-    padding: 50px 10%;
+    padding: 0 5%;
 }
 
 #question-loading {
@@ -115,10 +137,6 @@ html {
 #question-nav .pill:hover {
     background-color: #ccc;
     cursor: pointer;
-}
-
-#open-filter-btn {
-    margin-right: 15px;
 }
 
 .question-count {
@@ -496,4 +514,32 @@ html {
 
 .filter.location-filter ul.selected {
     margin: 0;
+}
+
+#filter-title {
+    margin-top: calc(60px + 0.67em);
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+#filters-hidden {
+    text-align: center;
+}
+
+#filters-hidden p {
+    color: #555;
+}
+
+#open-filter-btn {
+    margin-top: 0.5em;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #bbb;
+    font-weight: bold;
+    border-radius: 20px;
+}
+
+#open-filter-btn:hover {
+    background-color: #ccc;
+    cursor: pointer;
 }
