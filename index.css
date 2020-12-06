@@ -517,9 +517,15 @@ html {
 }
 
 #filter-title {
-    margin-top: calc(60px + 0.67em);
-    margin-bottom: 40px;
+    margin: calc(60px + 0.67em) auto 40px;
     text-align: center;
+    width: 85%;
+    padding-bottom: 1em;
+}
+
+#sidebar-chevron:hover {
+    cursor: pointer;
+    color: #333;
 }
 
 #filters-hidden {

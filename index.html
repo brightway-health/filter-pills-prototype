@@ -22,7 +22,7 @@
         <div id="col-container">
             <div id="col1">
                 <div id="questions">
-                    <h1>All Questions</h1>
+                    <h1>Browse Questions</h1>
                     <div id="question-nav">
                         <a class="pill" id="sort-questions-btn" @click="alert('Not in prototype')">Sort By: <span class="weak">Relevance</span><img src="down-arrow.svg" height="16" style="margin: 0 0 0 8px" /></a>
                         <h3 class="question-count">
@@ -43,7 +43,14 @@
             </div>
             <div id="col2-placeholder"></div>
             <div id="col2">
-                <h2 id="filter-title">Filter Questions By Tag</h2>
+                <h2 id="filter-title">
+                    <span class="left">Filter Questions By Tag</span>
+                    <span class="right" @click="toggleSidebar" id="sidebar-chevron">
+                        <span v-show="!showSidebar">^</span>
+                        <span v-show="showSidebar">v</span>
+                    </span>
+                </h2>
+                <br class="clr" />
                 <div id="filters-hidden" v-show="!showSidebar">
                     <p>Showing questions in <strong>My Tags</strong></p>
                     <a class="pill" id="open-filter-btn" @click="toggleSidebar"><img src="filter.svg" height="16" style="margin: 0 8px 0 0" />View Tags &ndash; <span class="weak">{{filtersSelected.total}} selected</span></a>
