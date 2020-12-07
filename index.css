@@ -519,11 +519,11 @@ html {
 #filter-title {
     margin: calc(60px + 0.67em) auto 40px;
     text-align: center;
-    width: 85%;
+    width: 77%;
     padding-bottom: 1em;
 }
 
-#sidebar-chevron:hover {
+#filter-title:hover {
     cursor: pointer;
     color: #333;
 }

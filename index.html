@@ -43,9 +43,9 @@
             </div>
             <div id="col2-placeholder"></div>
             <div id="col2">
-                <h2 id="filter-title">
+                <h2 id="filter-title" @click="toggleSidebar">
                     <span class="left">Filter Questions By Tag</span>
-                    <span class="right" @click="toggleSidebar" id="sidebar-chevron">
+                    <span class="right">
                         <span v-show="!showSidebar">^</span>
                         <span v-show="showSidebar">v</span>
                     </span>
