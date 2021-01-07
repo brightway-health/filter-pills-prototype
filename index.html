@@ -11,10 +11,12 @@
 <body>
     <div id="container">
         <div id="header">
-            <h1>LOGO</h1>
+            <div class="left">
+                <img src="logo.png" id="logo">
+                <a class="pill" id="header-search" @click="alert('Not in Prototype')"><img src="loupe.png" height="16" style="margin: 0 16px 0 0" />Search Brightway</a>
+            </div>
             <div id="header-pills">
-                <a class="pill" id="header-search" @click="alert('Not in Prototype')"><img src="loupe.svg" height="16" style="margin: 0 8px 0 0" />Search</a>
-                <a class="pill" id="header-ask" @click="alert('Not in Prototype')"><img src="plus.svg" height="16"  style="margin: 0 8px 0 0" />Ask a Question</a>
+                <a class="pill" id="header-ask" @click="alert('Not in Prototype')"><img src="plus.png" height="16"  style="margin: 0 8px 0 0" />Ask a Question</a>
                 <a id="header-menu" @click="alert('Not in Prototype')"><img src="menu.png" height="16" style="margin: 0 8px 0 0" />Menu</a>
             </div>
             <br class="clr" />

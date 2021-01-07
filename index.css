@@ -24,8 +24,8 @@ html {
 
 
 #header {
-    background-color: #666;
-    color: #fff;
+    background-color: #fff;
+    color: #000;
     box-sizing: border-box;
     padding: 14px 30px;
     width: 100%;
@@ -35,6 +35,7 @@ html {
     width: 1200px;
     max-width: 98%;
     z-index: 100;
+    border-bottom: 1px solid #c5c5c5;
 }
 
 #header h1 {
@@ -56,6 +57,31 @@ html {
     cursor: pointer;
 }
 
+#header #logo {
+    height: 45px;
+    margin-right: 40px;
+    float: left;
+}
+
+#header #header-search {
+    color: blue;
+    float: left;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+#header #header-search:hover {
+    text-decoration: underline;
+}
+
+#header #header-ask {
+    color: blue;
+}
+
+#header #header-ask:hover {
+    text-decoration: underline;
+}
+
 #header .pill {
     background-color: #ddd;
     color: #000;
@@ -73,7 +99,7 @@ html {
 }
 
 #header-menu:hover {
-    color: #ddd;
+    color: #555;
 }
 
 #col-container {
