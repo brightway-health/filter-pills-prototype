@@ -84,6 +84,16 @@ html {
     margin-top: 68px;
 }
 
+#question-nav #sort-questions-btn.pill {
+    color: blue;
+    background-color: #fff;
+}
+
+#question-nav #sort-questions-btn.pill:hover {
+    text-decoration: underline;
+    background-color: #ccc
+}
+
 #col1 {
     background-color: #eee;
     padding: 40px 0;
@@ -540,12 +550,35 @@ html {
     margin-top: 0.5em;
     display: inline-block;
     padding: 10px 20px;
-    background-color: #bbb;
+    background-color: #fff;
     font-weight: bold;
     border-radius: 20px;
+    color: blue;
 }
 
 #open-filter-btn:hover {
     background-color: #ccc;
     cursor: pointer;
+}
+
+#view-all-link {
+    display: block;
+    color: blue;
+    font-weight: bold;
+    margin-bottom: 40px;
+    text-align: center;
+    margin-top: -20px;
+}
+
+#view-all-link:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.filter-header {
+    color: blue;
+}
+
+.filter-header:hover {
+    text-decoration: underline;
 }

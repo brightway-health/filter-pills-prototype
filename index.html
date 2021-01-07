@@ -44,28 +44,28 @@
             <div id="col2-placeholder"></div>
             <div id="col2">
                 <h2 id="filter-title" @click="toggleSidebar">
-                    <span class="left">Filter Questions By Tag</span>
+                    <span class="left">View Questions By Tag</span>
                     <span class="right">
                         <span v-show="!showSidebar">^</span>
                         <span v-show="showSidebar">v</span>
                     </span>
                 </h2>
                 <br class="clr" />
+                <a @click="clearFilters" id="view-all-link">View All Questions</a>
                 <div id="filters-hidden" v-show="!showSidebar">
-                    <p>Showing questions in <strong>My Tags</strong></p>
-                    <a class="pill" id="open-filter-btn" @click="toggleSidebar"><img src="filter.svg" height="16" style="margin: 0 8px 0 0" />View Tags &ndash; <span class="weak">{{filtersSelected.total}} selected</span></a>
+                    <a class="pill" id="open-filter-btn" @click="toggleSidebar"><img src="filter.png" height="16" style="margin: 0 8px 0 0" />View Tags &ndash; <span class="weak">{{filtersSelected.total}} selected</span></a>
                 </div>
                 <div id="filters-shown" v-show="showSidebar">
-                    <div class="controlBtns">
+                    <!-- <div class="controlBtns">
                         <span class="left" v-if="myTagsSelected">My Tags are Selected</span>
                         <a @click="resetFilters" class="left" v-if="!myTagsSelected">Reset to My Tags</a>
                         <a @click="clearFilters" class="right">Clear Filters</a>
                         <br class="clr" />
-                    </div>
+                    </div> -->
 
                     <div class="filter-box">
                         <h4 @click="toggleFilter('symptoms')"><div>
-                            <span class="left">Symptoms & daily life</span>
+                            <span class="left filter-header">Symptoms & daily life</span>
                             <span class="right">
                                 <span class="weak filter-count" v-if="filtersSelected.symptoms > 0">{{filtersSelected.symptoms}} selected</span>
                                 <span v-if="showFilters.symptoms">v</span>
@@ -77,7 +77,7 @@
                     </div>
                     <div class="filter-box">
                         <h4 @click="toggleFilter('therapy')">
-                            <span class="left">Type of therapy</span>
+                            <span class="left filter-header">Type of therapy</span>
                             <span class="right">
                                 <span class="weak filter-count" v-if="filtersSelected.therapy > 0">{{filtersSelected.therapy}} selected</span>
                                 <span v-if="showFilters.therapy">v</span>
@@ -89,7 +89,7 @@
                     </div>
                     <div class="filter-box">
                         <h4 @click="toggleFilter('injury')">
-                            <span class="left">Type of injury</span>
+                            <span class="left filter-header">Type of injury</span>
                             <span class="right">
                                 <span class="weak filter-count" v-if="filtersSelected.injury > 0">{{filtersSelected.injury}} selected</span>
                                 <span v-if="showFilters.injury">v</span>
@@ -102,7 +102,7 @@
 
                     <div class="filter-box">
                         <h4 @click="toggleFilter('user')">
-                            <span class="left">User type</span>
+                            <span class="left filter-header">User type</span>
                             <span class="right">
                                 <span class="weak filter-count" v-if="filtersSelected.user > 0">{{filtersSelected.user}} selected</span>
                                 <span v-if="showFilters.user">v</span>
@@ -229,7 +229,7 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js" type="text/javascript"></script>
+    <script src="vue.min.js" type="text/javascript"></script>
     <script src="node_modules/vue-slider-component/dist/vue-slider-component.umd.js" type="text/javascript"></script>
     <script src="node_modules/@trevoreyre/autocomplete-vue/dist/autocomplete.min.js" type="text/javascript"></script>
     <script src="index.js" type="text/javascript"></script>
