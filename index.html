@@ -25,6 +25,11 @@
             <div id="col1">
                 <div id="questions">
                     <h1>Browse Questions</h1>
+                    <div id="main-col-filters">
+                        <main-col-filters></main-col-filters>
+                        <span @click="resetFilters" id="reset-tags">Reset to my tags</span>
+                        <br class="clr" />
+                    </div>
                     <div id="question-nav">
                         <a class="pill" id="sort-questions-btn" @click="alert('Not in prototype')">Sort By: <span class="weak">Relevance</span><img src="down-arrow.svg" height="16" style="margin: 0 0 0 8px" /></a>
                         <h3 class="question-count">

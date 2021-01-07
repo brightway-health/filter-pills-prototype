@@ -4,12 +4,12 @@ var defaultLocations = [ { t: 'New York, NY', s: false }, { t: 'New York', s: fa
 var eventHub = new Vue();
 
 var filters = [
-    { i: 1, s: true, t: "memory loss", c: "symptoms" },
-    { i: 2, s: true, t: "balance", c: "symptoms" },
+    { i: 1, s: true, d: true, m: true, t: "memory loss", c: "symptoms" },
+    { i: 2, s: true, d: true, m: true, t: "balance", c: "symptoms" },
     { i: 3, s: false, t: "vision", c: "symptoms" },
     { i: 4, s: false, t: "routine", c: "symptoms" },
-    { i: 5, s: true, t: "physical therapy", c: "therapy" },
-    { i: 6, s: true, t: "occupational therapy", c: "therapy" },
+    { i: 5, s: true, d: true, m: true, t: "physical therapy", c: "therapy" },
+    { i: 6, s: true, d: true, m: true, t: "occupational therapy", c: "therapy" },
     { i: 7, s: false, t: "emotional therapy", c: "therapy" },
     { i: 8, s: false, t: "recretional therapy", c: "therapy" },
     { i: 9, s: false, t: "traumatic brain injury", c: "injury" },
@@ -35,7 +35,7 @@ var filters = [
     { i: 31, s: false, c: "nutrition", t: "alcohol" },
     { i: 32, s: false, c: "nutrition", t: "weight loss" },
     { i: 33, s: false, c: "nutrition", t: "strength gain" },
-    { i: 34, s: true, c: "medications", t: "ibuprofen" },
+    { i: 34, s: true, d: true, m: true, c: "medications", t: "ibuprofen" },
     { i: 35, s: false, c: "medications", t: "noopept" },
     { i: 36, s: false, c: "medications", t: "modafinal" },
     { i: 37, s: false, c: "medications", t: "l-theanine" },
@@ -84,6 +84,14 @@ var filterActions = {
             var filterId = filterStore.filters[i].i;
             if (filterId === id) {
                 filterStore.filters[i].s = !filterStore.filters[i].s;
+                filterStore.filters[i].d = true;
+            }
+        }
+
+        for (i in filters) {
+            var filterId = filters[i].i;
+            if (filterId === id) {
+                filters[i].d = true;
             }
         }
     },
@@ -198,6 +206,33 @@ Vue.component('question', {
     template: questionTemplate,
 });
 
+var mainColFilterTemplate = '<span> \
+<a class="pill" v-for="filter of filters" :class="{ active: filter.s }" @click="toggleFilter(filter.i)">{{ filter.t }}</a> \
+</span>';
+
+Vue.component('main-col-filters', {
+    data: {
+        filters,
+    },
+    computed: {
+        filters: function () {
+            return filterStore.filters.filter(function (filter) {
+                return filter.d || filter.s;
+            });
+        }
+    },
+    template: mainColFilterTemplate,
+    methods: {
+        toggleFilter: function (id) {
+            this.$actions.toggleFilter(id);
+            this.loadFn();
+        },
+        loadFn: function () {
+            eventHub.$emit("load");
+        }
+    }
+})
+
 /**
  * Main app
  */
@@ -295,7 +330,7 @@ let app = new Vue({
         },
         yearsChanged: function () {
             return this.sliderValue[0] != 0 || this.sliderValue[1] != 11;
-        },
+        }
     },
     created: function () {
         setTimeout(
