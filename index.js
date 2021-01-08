@@ -48,6 +48,13 @@ var filters = [
     { i: 43, s: false, t: "partially recovered", c: "recovery" },
     { i: 44, s: false, t: "mostly recovered", c: "recovery" },
     { i: 45, s: false, t: "fully recovered", c: "recovery" },
+    { i: 46, s: false, c: "date", t: "<1 month" },
+    { i: 47, s: false, c: "date", t: "1-3 months" },
+    { i: 48, s: false, c: "date", t: "3-12 months" },
+    { i: 49, s: false, c: "date", t: "1-3 years" },
+    { i: 50, s: false, c: "date", t: "3-5 years" },
+    { i: 51, s: false, c: "date", t: "5-10 years" },
+    { i: 52, s: false, c: "date", t: "10+ years" },
 ];
 
 var locations = [
@@ -137,7 +144,7 @@ Vue.component("filter-list", {
 
 var filterDorpdownTemplate = '<span> \
 <a :class="{\'dorpdown-selector\': true, active: visible }" @click="visible = !visible"> \
-<span class="dorpdown-selector-title">any</span><span class="dorpdown-selector-arrow" v-if="!visible">v</span><span class="dorpdown-selector-arrow" v-if="visible">^</span> \
+<span class="dorpdown-selector-title">{{title}}</span><span class="dorpdown-selector-arrow" v-if="!visible">v</span><span class="dorpdown-selector-arrow" v-if="visible">^</span> \
 </a> \
 <div class="dorpdown-container" v-show="visible"> \
 <p class="dorpdown-clear"><a :class="{disabled: !anyActive}" @click="clear">Clear Filters</a></p> \
@@ -165,6 +172,23 @@ Vue.component('filter-dorpdown', {
             return this.filters.filter(function (filter) {
                 return filter.s;
             }).length > 0;
+        },
+        title: function () {
+            if (this.anyActive) {
+                var string = this.filters.filter(function (filter) {
+                    return filter.s;
+                }).map(function (filter) {
+                    return filter.t;
+                }).join(', ');
+
+                if (string.length > 22) {
+                    return string.substring(0, 20) + '...';
+                }
+
+                return string;
+            } else {
+                return 'any';
+            }
         }
     },
     template: filterDorpdownTemplate,
@@ -358,6 +382,10 @@ let app = new Vue({
                 }
 
                 if (!curFilter.s && origFilter.m) {
+                    same = false;
+                }
+
+                if (curFilter.d !== origFilter.d) {
                     same = false;
                 }
             }
