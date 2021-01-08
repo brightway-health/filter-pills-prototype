@@ -87,20 +87,13 @@ var filterActions = {
                 filterStore.filters[i].d = true;
             }
         }
-
-        for (i in filters) {
-            var filterId = filters[i].i;
-            if (filterId === id) {
-                filters[i].d = true;
-            }
-        }
     },
     resetFilters: function () {
         filterStore.filters = filters.map(function (v) { return {...v} });
         eventHub.$emit('load');
     },
     clearFilters: function () {
-        filterStore.filters = filters.map(function (f) {
+        filterStore.filters = filterStore.filters.map(function (f) {
             return { ...f, s: false };
         });
         eventHub.$emit('load');
