@@ -216,6 +216,57 @@ html {
   cursor: pointer;
 }
 
+#user-filters {
+    padding: 0 25px 10px;
+}
+
+#user-filters .user-filter-row {
+    margin: 15px 0;
+}
+
+#user-filters .user-filter-title {
+    display: inline-block;
+    width: 135px;
+    line-height: 1.2em;
+}
+
+.dorpdown-selector-title, .dorpdown-selector-arrow {
+    border: 1px solid #ddd;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    color: #333;
+    text-transform: lowercase;
+    padding: 2px 8px;
+    background-color: #fff;
+    line-height: 1.2em;
+}
+
+.dorpdown-selector.active .dorpdown-selector-title, .dorpdown-selector.active .dorpdown-selector-arrow {
+    background-color: #bbb;
+}
+
+.dorpdown-selector:hover .dorpdown-selector-title, .dorpdown-selector:hover .dorpdown-selector-arrow {
+    cursor: pointer;
+    background-color: #ddd;
+}
+
+.dorpdown-selector.active:hover .dorpdown-selector-title, .dorpdown-selector.active:hover .dorpdown-selector-arrow {
+    background-color: #999;
+}
+
+.dorpdown-container {
+    position: absolute;
+    background-color: #fff;
+    z-index: 100;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    width: 425px;
+    height: 100px;
+    margin-left: -25px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
 .filter {
     margin-top: 8px;
   padding: 0 0 10px;
@@ -396,9 +447,10 @@ html {
 }
 
 .question {
-    padding: 15px;
+    padding: 20px;
     border-radius: 7px;
-    background-color: #ddd;
+    background-color: #fff;
+    border: 1px solid #ddd;
     box-sizing: border-box;
 }
 

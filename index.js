@@ -134,6 +134,25 @@ Vue.component("filter-list", {
     }
 });
 
+var filterDorpdownTemplate = '<span> \
+<a :class="{\'dorpdown-selector\': true, active: visible }" @click="visible = !visible"> \
+<span class="dorpdown-selector-title">any</span><span class="dorpdown-selector-arrow" v-if="!visible">v</span><span class="dorpdown-selector-arrow" v-if="visible">^</span> \
+</a> \
+<div class="dorpdown-container" v-show="visible"></div> \
+</span>';
+
+Vue.component('filter-dorpdown', {
+    data: function () {
+        return {
+            visible: false,
+        }
+    },
+    template: filterDorpdownTemplate,
+    methods: {
+        // todo
+    },
+})
+
 /**
  * Question template
  */
@@ -216,9 +235,6 @@ var mainColFilterTemplate = '<span> \
 
 Vue.component('main-col-filters', {
     props: ['numberSelected'],
-    data: {
-        filters,
-    },
     computed: {
         filters: function () {
             return filterStore.filters.filter(function (filter) {
@@ -246,19 +262,15 @@ let app = new Vue({
     data: {
         loading: true,
         results: 84,
-        showSidebar: false,
+        showSidebar: true,
         questions: questions,
         sliderValue: [0, 11],
         locations: defaultLocations.map(function (v) { return { ...v } }),
         showFilters: {
             symptoms: false,
             therapy: false,
-            injury: false,
-            user: false,
-            years: false,
-            location: false,
+            userType: true,
             financial: false,
-            recovery: false,
             nutrition: false,
             medications: false,
             legal: false,

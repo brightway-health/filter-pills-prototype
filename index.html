@@ -137,6 +137,42 @@
                         </h4>
                         <filter-list v-show="showFilters.legal" :name="'legal'"></filter-list>
                     </div>
+
+                    <div class="filter-box">
+                        <h4 @click="toggleFilter('userType')">
+                            <span class="left filter-header">
+                                <img src="filter.png" height="16" style="margin-right: 10px" />
+                                User Filters
+                            </span>
+                            <span class="right">
+                                <span v-if="showFilters.userType">v</span>
+                                <span v-if="!showFilters.userType">^</span>
+                            </span>
+                            <br class="clr" />
+                        </h4>
+                        <div v-show="showFilters.userType" id="user-filters">
+                            <div class="user-filter-row">
+                                <span class="user-filter-title">Type of injury:</span>
+                                <span class="user-filter-dorpdown"><filter-dorpdown></filter-dorpdown></span>
+                            </div>
+                            <div class="user-filter-row">
+                                <span class="user-filter-title">User type:</span>
+                                <span class="user-filter-dorpdown"><filter-dorpdown></filter-dorpdown></span>
+                            </div>
+                            <div class="user-filter-row">
+                                <span class="user-filter-title">Location:</span>
+                                <span class="user-filter-dorpdown"><filter-dorpdown></filter-dorpdown></span>
+                            </div>
+                            <div class="user-filter-row">
+                                <span class="user-filter-title">Time since injury:</span>
+                                <span class="user-filter-dorpdown"><filter-dorpdown></filter-dorpdown></span>
+                            </div>
+                            <div class="user-filter-row">
+                                <span class="user-filter-title">Recovery status:</span>
+                                <span class="user-filter-dorpdown"><filter-dorpdown></filter-dorpdown></span>
+                            </div>
+                        </div>
+                    </div>
                     <!-- <div class="filter-box">
                         <h4 @click="toggleFilter('injury')">
                             <span class="left filter-header">Type of injury</span>
