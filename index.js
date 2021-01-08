@@ -34,19 +34,20 @@ var filters = [
     { i: 40, s: false, c: "legal", t: "lawyer" },
     { i: 41, s: false, c: "legal", t: "liability" },
     { i: 42, s: false, t: "sex & relationships", c: "symptoms" },
-    // { i: 9, s: false, t: "traumatic brain injury", c: "injury" },
-    // { i: 10, s: false, t: "stroke", c: "injury" },
-    // { i: 11, s: false, t: "anoxic brain injury", c: "injury" },
-    // { i: 13, s: false, t: "survivor", c: "user" },
-    // { i: 14, s: false, t: "caregiver", c: "user" },
-    // { i: 15, s: false, t: "medical provider", c: "user" },
-    // { i: 16, s: false, t: "researcher", c: "user" },
-    // { i: 26, s: false, t: "unconscious", c: "recovery" },
-    // { i: 27, s: false, t: "minimally conscious", c: "recovery" },
-    // { i: 28, s: false, t: "starting to recover", c: "recovery" },
-    // { i: 43, s: false, t: "partially recovered", c: "recovery" },
-    // { i: 44, s: false, t: "mostly recovered", c: "recovery" },
-    // { i: 45, s: false, t: "fully recovered", c: "recovery" },
+    // User type filters
+    { i: 9, s: false, t: "traumatic brain injury", c: "injury" },
+    { i: 10, s: false, t: "stroke", c: "injury" },
+    { i: 11, s: false, t: "anoxic brain injury", c: "injury" },
+    { i: 13, s: false, t: "survivor", c: "user" },
+    { i: 14, s: false, t: "caregiver", c: "user" },
+    { i: 15, s: false, t: "medical provider", c: "user" },
+    { i: 16, s: false, t: "researcher", c: "user" },
+    { i: 26, s: false, t: "unconscious", c: "recovery" },
+    { i: 27, s: false, t: "minimally conscious", c: "recovery" },
+    { i: 28, s: false, t: "starting to recover", c: "recovery" },
+    { i: 43, s: false, t: "partially recovered", c: "recovery" },
+    { i: 44, s: false, t: "mostly recovered", c: "recovery" },
+    { i: 45, s: false, t: "fully recovered", c: "recovery" },
 ];
 
 var locations = [
@@ -138,18 +139,53 @@ var filterDorpdownTemplate = '<span> \
 <a :class="{\'dorpdown-selector\': true, active: visible }" @click="visible = !visible"> \
 <span class="dorpdown-selector-title">any</span><span class="dorpdown-selector-arrow" v-if="!visible">v</span><span class="dorpdown-selector-arrow" v-if="visible">^</span> \
 </a> \
-<div class="dorpdown-container" v-show="visible"></div> \
+<div class="dorpdown-container" v-show="visible"> \
+<p class="dorpdown-clear"><a :class="{disabled: !anyActive}" @click="clear">Clear Filters</a></p> \
+<a v-for="filter in filters" :class="{\'dorpdown-filter\': true, active: filter.s}" @click="toggleFilter(filter.i)">{{filter.t}}</a> \
+<br class="clr" />\
+</div> \
 </span>';
 
 Vue.component('filter-dorpdown', {
+    props: ['name'],
     data: function () {
         return {
             visible: false,
         }
     },
+    computed: {
+        filters: function () {
+            var filters = filterStore.filters.filter((function (filter) {
+                return filter.c == this.name;
+            }).bind(this));
+
+            return filters;
+        },
+        anyActive: function () {
+            return this.filters.filter(function (filter) {
+                return filter.s;
+            }).length > 0;
+        }
+    },
     template: filterDorpdownTemplate,
     methods: {
-        // todo
+        toggleFilter: function (id) {
+            this.$actions.toggleFilter(id);
+            this.loadFn();
+        },
+        loadFn: function () {
+            eventHub.$emit("load");
+        },
+        clear: function () {
+            if (this.anyActive) {
+                for (var filter of this.filters) {
+                    if (filter.s) {
+                        this.$actions.toggleFilter(filter.i);
+                    }
+                }
+                this.loadFn();
+            }
+        }
     },
 })
 

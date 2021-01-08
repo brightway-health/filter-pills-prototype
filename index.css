@@ -260,11 +260,37 @@ html {
     z-index: 100;
     border: 1px solid #ddd;
     border-radius: 7px;
-    width: 425px;
-    height: 100px;
+    width: 400px;
     margin-left: -25px;
     margin-top: 5px;
     margin-bottom: 20px;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.dorpdown-clear {
+    text-align: right;
+    font-weight: bold;
+    padding: 0 10px;
+    margin: 0;
+}
+
+.dorpdown-clear a {
+    color: blue;
+}
+
+.dorpdown-clear a:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.dorpdown-clear a.disabled {
+    color: #bbb;
+}
+
+.dorpdown-clear a.disabled:hover {
+    cursor: default;
+    text-decoration: none;
 }
 
 .filter {
@@ -278,26 +304,26 @@ html {
   list-style: none;
 }
 
-.filter ul.selected li {
+.filter ul.selected li, .dorpdown-filter {
   float: left;
   margin: 2px 5px;
-  padding: 3px 8px;
+  padding: 2px 8px;
   border-radius: 8px;
   background-color: #fff;
-  border: 2px solid #666;
+  border: 1px solid #ccc;
   color: #000;
 }
 
-.filter ul.selected li:hover {
+.filter ul.selected li:hover, .dorpdown-filter:hover {
   background-color: #ddd;
   cursor: pointer;
 }
 
-.filter ul.selected li.active:hover {
+.filter ul.selected li.active:hover, .dorpdown-filter.active:hover {
     background-color: #888;
 }
 
-.filter ul.selected li.active {
+.filter ul.selected li.active, .dorpdown-filter.active {
     background-color: #666;
     color: #fff;
 }
