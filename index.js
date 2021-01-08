@@ -35,26 +35,26 @@ var filters = [
     { i: 41, s: false, c: "legal", t: "liability" },
     { i: 42, s: false, t: "sex & relationships", c: "symptoms" },
     // User type filters
-    { i: 9, s: false, t: "traumatic brain injury", c: "injury" },
-    { i: 10, s: false, t: "stroke", c: "injury" },
-    { i: 11, s: false, t: "anoxic brain injury", c: "injury" },
-    { i: 13, s: false, t: "survivor", c: "user" },
-    { i: 14, s: false, t: "caregiver", c: "user" },
-    { i: 15, s: false, t: "medical provider", c: "user" },
-    { i: 16, s: false, t: "researcher", c: "user" },
-    { i: 26, s: false, t: "unconscious", c: "recovery" },
-    { i: 27, s: false, t: "minimally conscious", c: "recovery" },
-    { i: 28, s: false, t: "starting to recover", c: "recovery" },
-    { i: 43, s: false, t: "partially recovered", c: "recovery" },
-    { i: 44, s: false, t: "mostly recovered", c: "recovery" },
-    { i: 45, s: false, t: "fully recovered", c: "recovery" },
-    { i: 46, s: false, c: "date", t: "<1 month" },
-    { i: 47, s: false, c: "date", t: "1-3 months" },
-    { i: 48, s: false, c: "date", t: "3-12 months" },
-    { i: 49, s: false, c: "date", t: "1-3 years" },
-    { i: 50, s: false, c: "date", t: "3-5 years" },
-    { i: 51, s: false, c: "date", t: "5-10 years" },
-    { i: 52, s: false, c: "date", t: "10+ years" },
+    { i: 9, u: true, s: false, t: "traumatic brain injury", c: "injury" },
+    { i: 10, u: true, s: false, t: "stroke", c: "injury" },
+    { i: 11, u: true, s: false, t: "anoxic brain injury", c: "injury" },
+    { i: 13, u: true, s: false, t: "survivor", c: "user" },
+    { i: 14, u: true, s: false, t: "caregiver", c: "user" },
+    { i: 15, u: true, s: false, t: "medical provider", c: "user" },
+    { i: 16, u: true, s: false, t: "researcher", c: "user" },
+    { i: 26, u: true, s: false, t: "unconscious", c: "recovery" },
+    { i: 27, u: true, s: false, t: "minimally conscious", c: "recovery" },
+    { i: 28, u: true, s: false, t: "starting to recover", c: "recovery" },
+    { i: 43, u: true, s: false, t: "partially recovered", c: "recovery" },
+    { i: 44, u: true, s: false, t: "mostly recovered", c: "recovery" },
+    { i: 45, u: true, s: false, t: "fully recovered", c: "recovery" },
+    { i: 46, u: true, s: false, c: "date", t: "<1 month" },
+    { i: 47, u: true, s: false, c: "date", t: "1-3 months" },
+    { i: 48, u: true, s: false, c: "date", t: "3-12 months" },
+    { i: 49, u: true, s: false, c: "date", t: "1-3 years" },
+    { i: 50, u: true, s: false, c: "date", t: "3-5 years" },
+    { i: 51, u: true, s: false, c: "date", t: "5-10 years" },
+    { i: 52, u: true, s: false, c: "date", t: "10+ years" },
 ];
 
 var locations = [
@@ -298,7 +298,7 @@ Vue.component('main-col-filters', {
     computed: {
         filters: function () {
             return filterStore.filters.filter(function (filter) {
-                return filter.d || filter.s;
+                return !filter.u && (filter.d || filter.s);
             });
         },
     },
@@ -334,7 +334,8 @@ let app = new Vue({
             nutrition: false,
             medications: false,
             legal: false,
-        }
+        },
+        locationVisible: false,
     },
     computed: {
         filtersSelected: function () {
@@ -414,7 +415,54 @@ let app = new Vue({
         },
         yearsChanged: function () {
             return this.sliderValue[0] != 0 || this.sliderValue[1] != 11;
-        }
+        },
+        userFiltersSentence: function () {
+            var filterByType = function (type) {
+                return filterStore.filters.filter(function (filter) {
+                    return filter.c === type && filter.s;
+                }).map(function (filter) {
+                    return filter.t;
+                });
+            }
+
+            var injuryFilters = filterByType('injury');
+            var userFilters = filterByType('user');
+            var timeFilters = filterByType('date');
+            var recoveryFilters = filterByType('recovery');
+            var locationFilters = this.locations.filter(function (location) { return location.s }).map(function (location) { return location.t });
+
+            var out = 'Asked by ';
+            if (injuryFilters.length > 0) {
+                out += injuryFilters.join(', ') + ' ';
+            }
+
+            if (userFilters.length > 0) {
+                out += userFilters.join(', ') + ' ';
+            } else {
+                out += 'users ';
+            }
+
+            if (locationFilters.length > 0) {
+                out += 'located in ' + locationFilters.join(', ') + ' ';
+            }
+
+            if (timeFilters.length > 0) {
+                out += 'injured in the last ' + timeFilters.join(', ') + ' ';
+            }
+
+            if (recoveryFilters.length > 0) {
+                out += 'who are now ' + recoveryFilters.join(', ') + ' ';
+            }
+
+            return out;
+        },
+        hasUserFilters: function () {
+            return (filterStore.filters.find(function (filter) {
+                return filter.u && filter.s;
+            }) !== undefined) || (this.locations.find(function (location) {
+                return location.s;
+            }) !== undefined);
+        },
     },
     created: function () {
         setTimeout(

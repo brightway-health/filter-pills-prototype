@@ -30,6 +30,7 @@
                         <span @click="resetFilters" id="reset-tags" v-show="!myTagsSelected">Reset to my tags</span>
                         <br class="clr" />
                     </div>
+                    <div id="user-filters-sentence" v-if="hasUserFilters">{{userFiltersSentence}}</div>
                     <div id="question-nav">
                         <a class="pill" id="sort-questions-btn" @click="alert('Not in prototype')">Sort By: <span class="weak">Relevance</span><img src="down-arrow.svg" height="16" style="margin: 0 0 0 8px" /></a>
                         <h3 class="question-count">
@@ -161,7 +162,29 @@
                             </div>
                             <div class="user-filter-row">
                                 <span class="user-filter-title">Location:</span>
-                                <span class="user-filter-dorpdown"><filter-dorpdown></filter-dorpdown></span>
+                                <span class="user-filter-dorpdown">
+                                    <span>
+                                        <a :class="{'dorpdown-selector': true, active: locationVisible }" @click="locationVisible = !locationVisible">
+                                            <span class="dorpdown-selector-title">any</span><span class="dorpdown-selector-arrow" v-if="!locationVisible">v</span><span class="dorpdown-selector-arrow" v-if="locationVisible">^</span>
+                                        </a>
+                                        <div class="dorpdown-container" v-show="locationVisible">
+                                            <p class="dorpdown-clear"><a :class="{disabled: true}">Clear Filters</a></p>
+                                            <div class="location-filter-wrap">
+                                                <div class="filter location-filter">
+                                                    <ul class="selected">
+                                                        <li v-for="location in locations" v-on:click="location.s = !location.s; loadFn();" :class="{ active: location.s }">{{ location.t }}</li>
+                                                    </ul>
+                                                    <br class="clr" />
+                                                </div>
+                                                <div class="location-auto-wrap">
+                                                    <v-autocomplete :search="locationSearch" @submit="locationSubmit" ref="locationField" placeholder="Add more cities or states"></v-autocomplete>
+                                                </div>
+                                                <br class="clr" />
+                                            </div>
+                                            <br class="clr" />
+                                        </div>
+                                    </span>
+                                </span>
                             </div>
                             <div class="user-filter-row">
                                 <span class="user-filter-title">Time since injury:</span>

@@ -742,3 +742,7 @@ html {
     color: #444;
     font-style: italic;
 }
+
+#user-filters-sentence {
+    margin: 0 5px;
+}
