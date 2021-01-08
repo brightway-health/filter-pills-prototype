@@ -194,7 +194,10 @@ Vue.component("filter-list", {
  <br class="clr" /></div>\
  <h2 @click="alert(\'Not in Prototype\')">{{question.title}}</h2>\
  <p class="question-text">{{question.text}}</p>\
- <div class="tags"><a v-for="tag in question.tags" @click="alert(\'Not in Prototype\')">{{tag}}</a></div>\
+ <div class="tags"> \
+ <a v-for="tag in question.tags" @click="alert(\'Not in Prototype\')">{{tag}}</a> \
+ <a @click="alert(\'Not in Prototype\')" v-if="filters.length > 0">{{filters[Math.floor(Math.random() * filters.length)].t}}</a>\
+ </div>\
  </div>\
  <div class="answers"><a class="left" @click="alert(\'Not in Prototype\')">Show 2 answers</a><a class="right" @click="alert(\'Not in Prototype\')">+ Write an answer</a><br class="clr" /></div>\
  </div>\
@@ -204,13 +207,22 @@ Vue.component("filter-list", {
 Vue.component('question', {
     props: ['question'],
     template: questionTemplate,
+    computed: {
+        filters: function () {
+            return filterStore.filters.filter(function (filter) { return filter.s });
+        }
+    }
 });
 
 var mainColFilterTemplate = '<span> \
+<span v-if="numberSelected === 0" id="viewing-all-q-notice">Viewing all questions</span> \
+<span v-if="numberSelected > 0"> \
 <a class="pill" v-for="filter of filters" :class="{ active: filter.s }" @click="toggleFilter(filter.i)">{{ filter.t }}</a> \
+</span> \
 </span>';
 
 Vue.component('main-col-filters', {
+    props: ['numberSelected'],
     data: {
         filters,
     },
@@ -219,7 +231,7 @@ Vue.component('main-col-filters', {
             return filterStore.filters.filter(function (filter) {
                 return filter.d || filter.s;
             });
-        }
+        },
     },
     template: mainColFilterTemplate,
     methods: {
@@ -301,7 +313,11 @@ let app = new Vue({
                 var curFilter = filterStore.filters[n];
                 var origFilter = filters[n];
 
-                if (curFilter.s !== origFilter.s) {
+                if (curFilter.s && !origFilter.m) {
+                    same = false;
+                }
+
+                if (!curFilter.s && origFilter.m) {
                     same = false;
                 }
             }
@@ -335,7 +351,7 @@ let app = new Vue({
     created: function () {
         setTimeout(
             function () {
-                this.results = Math.floor(Math.random() * 100);
+                this.results = this.filtersSelected.total !== 0 ? this.filtersSelected.total * 7 : 294,
                 this.loading = false;
             }.bind(this),
             500
@@ -345,7 +361,7 @@ let app = new Vue({
             this.loading = true;
             setTimeout(
                 function () {
-                    this.results = Math.floor(Math.random() * 100);
+                    this.results = this.filtersSelected.total !== 0 ? this.filtersSelected.total * 7 : 294,
                     this.loading = false;
                 }.bind(this),
                 500
@@ -401,7 +417,6 @@ function repositionColumns() {
 
     col2.style.width = placeholderRect.width;
     col2.style.left = placeholderRect.left;
-    console.log(placeholder.getBoundingClientRect());
 }
 
 document.onreadystatechange = function (e) {

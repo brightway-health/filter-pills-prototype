@@ -601,6 +601,15 @@ html {
     text-decoration: underline;
 }
 
+#view-all-link.disabled {
+    color: #444;
+}
+
+#view-all-link.disabled:hover {
+    text-decoration: none;
+    cursor: default;
+}
+
 .filter-header {
     color: blue;
 }
@@ -647,4 +656,11 @@ html {
 #main-col-filters #reset-tags:hover {
     text-decoration: underline;
     cursor: pointer;
+}
+
+#main-col-filters #viewing-all-q-notice {
+    float: left;
+    line-height: 2em;
+    color: #444;
+    font-style: italic;
 }

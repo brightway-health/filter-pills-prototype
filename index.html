@@ -26,8 +26,8 @@
                 <div id="questions">
                     <h1>Browse Questions</h1>
                     <div id="main-col-filters">
-                        <main-col-filters></main-col-filters>
-                        <span @click="resetFilters" id="reset-tags">Reset to my tags</span>
+                        <main-col-filters :number-selected="filtersSelected.total"></main-col-filters>
+                        <span @click="resetFilters" id="reset-tags" v-show="!myTagsSelected">Reset to my tags</span>
                         <br class="clr" />
                     </div>
                     <div id="question-nav">
@@ -58,18 +58,11 @@
                     </span>
                 </h2>
                 <br class="clr" />
-                <a @click="clearFilters" id="view-all-link">View All Questions</a>
+                <a @click="clearFilters" id="view-all-link" :class="{disabled: filtersSelected.total === 0}">View All Questions</a>
                 <div id="filters-hidden" v-show="!showSidebar">
                     <a class="pill" id="open-filter-btn" @click="toggleSidebar"><img src="filter.png" height="16" style="margin: 0 8px 0 0" />View Tags &ndash; <span class="weak">{{filtersSelected.total}} selected</span></a>
                 </div>
                 <div id="filters-shown" v-show="showSidebar">
-                    <!-- <div class="controlBtns">
-                        <span class="left" v-if="myTagsSelected">My Tags are Selected</span>
-                        <a @click="resetFilters" class="left" v-if="!myTagsSelected">Reset to My Tags</a>
-                        <a @click="clearFilters" class="right">Clear Filters</a>
-                        <br class="clr" />
-                    </div> -->
-
                     <div class="filter-box">
                         <h4 @click="toggleFilter('symptoms')"><div>
                             <span class="left filter-header">Symptoms & daily life</span>
