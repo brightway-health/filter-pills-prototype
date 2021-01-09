@@ -9,283 +9,200 @@
 </head>
 
 <body>
-    <div id="container">
-        <div id="header">
-            <div class="left">
-                <img src="logo.png" id="logo">
-                <a class="pill" id="header-search" @click="alert('Not in Prototype')"><img src="loupe.png" height="16" style="margin: 0 16px 0 0" />Search Brightway</a>
-            </div>
-            <div id="header-pills">
-                <a class="pill" id="header-ask" @click="alert('Not in Prototype')"><img src="plus.png" height="16"  style="margin: 0 8px 0 0" />Ask a Question</a>
-                <a id="header-menu" @click="alert('Not in Prototype')"><img src="menu.png" height="16" style="margin: 0 8px 0 0" />Menu</a>
-            </div>
-            <br class="clr" />
-        </div>
-        <div id="col-container">
-            <div id="col1">
-                <div id="questions">
-                    <h1>Browse Questions</h1>
-                    <div id="main-col-filters">
-                        <main-col-filters :number-selected="filtersSelected.total"></main-col-filters>
-                        <span @click="resetFilters" id="reset-tags" v-show="!myTagsSelected">Reset to my tags</span>
-                        <br class="clr" />
-                    </div>
-                    <div id="user-filters-sentence" v-if="hasUserFilters">{{userFiltersSentence}}</div>
-                    <div id="question-nav">
-                        <a class="pill" id="sort-questions-btn" @click="alert('Not in prototype')">Sort By: <span class="weak">Relevance</span><img src="down-arrow.svg" height="16" style="margin: 0 0 0 8px" /></a>
-                        <h3 class="question-count">
-                            <span v-if="loading">-</span>
-                            <span v-if="!loading">{{ results }} questions</span>
-                        </h3>
-                        <br class="clr" />
-                    </div>
-                    <div id="question-list">
-                        <div v-if="loading" id="question-loading">
-                            <h3>Loading...</h3>
-                        </div>
-                        <div v-if="!loading">
-                            <question v-for="question in questions" :question="question"></question>
-                        </div>
-                    </div>
+    <div id="app" @click="closeUserFilter">
+        <div id="container">
+            <div id="header">
+                <div class="left">
+                    <img src="logo.png" id="logo">
+                    <a class="pill" id="header-search" @click="alert('Not in Prototype')"><img src="loupe.png" height="16" style="margin: 0 16px 0 0" />Search Brightway</a>
                 </div>
-            </div>
-            <div id="col2-placeholder"></div>
-            <div id="col2">
-                <h2 id="filter-title" @click="toggleSidebar">
-                    <span class="left">View Questions By Tag</span>
-                    <span class="right">
-                        <span v-show="!showSidebar">^</span>
-                        <span v-show="showSidebar">v</span>
-                    </span>
-                </h2>
+                <div id="header-pills">
+                    <a class="pill" id="header-ask" @click="alert('Not in Prototype')"><img src="plus.png" height="16"  style="margin: 0 8px 0 0" />Ask a Question</a>
+                    <a id="header-menu" @click="alert('Not in Prototype')"><img src="menu.png" height="16" style="margin: 0 8px 0 0" />Menu</a>
+                </div>
                 <br class="clr" />
-                <a @click="clearFilters" id="view-all-link" :class="{disabled: filtersSelected.total === 0}">View All Questions</a>
-                <div id="filters-hidden" v-show="!showSidebar">
-                    <a class="pill" id="open-filter-btn" @click="toggleSidebar"><img src="filter.png" height="16" style="margin: 0 8px 0 0" />View Tags &ndash; <span class="weak">{{filtersSelected.total}} selected</span></a>
+            </div>
+            <div id="col-container">
+                <div id="col1">
+                    <div id="questions">
+                        <h1>Browse Questions</h1>
+                        <div id="main-col-filters">
+                            <main-col-filters :number-selected="filtersSelected.total"></main-col-filters>
+                            <span @click="resetFilters" id="reset-tags" v-show="!myTagsSelected">Reset to my tags</span>
+                            <br class="clr" />
+                        </div>
+                        <div id="user-filters-sentence" v-if="hasUserFilters">{{userFiltersSentence}}</div>
+                        <div id="question-nav">
+                            <a class="pill" id="sort-questions-btn" @click="alert('Not in prototype')">Sort By: <span class="weak">Relevance</span><img src="down-arrow.svg" height="16" style="margin: 0 0 0 8px" /></a>
+                            <h3 class="question-count">
+                                <span v-if="loading">-</span>
+                                <span v-if="!loading">{{ results }} questions</span>
+                            </h3>
+                            <br class="clr" />
+                        </div>
+                        <div id="question-list">
+                            <div v-if="loading" id="question-loading">
+                                <h3>Loading...</h3>
+                            </div>
+                            <div v-if="!loading">
+                                <question v-for="question in questions" :question="question"></question>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div id="filters-shown" v-show="showSidebar">
-                    <div class="filter-box">
-                        <h4 @click="toggleFilter('symptoms')"><div>
-                            <span class="left filter-header">Symptoms & daily life</span>
-                            <span class="right">
-                                <span class="weak filter-count" v-if="filtersSelected.symptoms > 0">{{filtersSelected.symptoms}} selected</span>
-                                <span v-if="showFilters.symptoms">v</span>
-                                <span v-if="!showFilters.symptoms">^</span>
-                            </span>
-                            <br class="clr" />
-                        </h4>
-                        <filter-list v-show="showFilters.symptoms" :name="'symptoms'"></filter-list>
+                <div id="col2-placeholder"></div>
+                <div id="col2">
+                    <h2 id="filter-title" @click="toggleSidebar">
+                        <span class="left">View Questions By Tag</span>
+                        <span class="right">
+                            <span v-show="!showSidebar">^</span>
+                            <span v-show="showSidebar">v</span>
+                        </span>
+                    </h2>
+                    <br class="clr" />
+                    <a @click="clearFilters" id="view-all-link" :class="{disabled: filtersSelected.total === 0}">View All Questions</a>
+                    <div id="filters-hidden" v-show="!showSidebar">
+                        <a class="pill" id="open-filter-btn" @click="toggleSidebar"><img src="filter.png" height="16" style="margin: 0 8px 0 0" />View Tags &ndash; <span class="weak">{{filtersSelected.total}} selected</span></a>
                     </div>
-                    <div class="filter-box">
-                        <h4 @click="toggleFilter('therapy')">
-                            <span class="left filter-header">Type of therapy</span>
-                            <span class="right">
-                                <span class="weak filter-count" v-if="filtersSelected.therapy > 0">{{filtersSelected.therapy}} selected</span>
-                                <span v-if="showFilters.therapy">v</span>
-                                <span v-if="!showFilters.therapy">^</span>
-                            </span>
-                            <br class="clr" />
+                    <div id="filters-shown" v-show="showSidebar">
+                        <div class="filter-box">
+                            <h4 @click="toggleFilter('symptoms')"><div>
+                                <span class="left filter-header">Symptoms & daily life</span>
+                                <span class="right">
+                                    <span class="weak filter-count" v-if="filtersSelected.symptoms > 0">{{filtersSelected.symptoms}} selected</span>
+                                    <span v-if="showFilters.symptoms">v</span>
+                                    <span v-if="!showFilters.symptoms">^</span>
+                                </span>
+                                <br class="clr" />
                             </h4>
-                        <filter-list v-show="showFilters.therapy" :name="'therapy'"></filter-list>
-                    </div>
+                            <filter-list v-show="showFilters.symptoms" :name="'symptoms'"></filter-list>
+                        </div>
+                        <div class="filter-box">
+                            <h4 @click="toggleFilter('therapy')">
+                                <span class="left filter-header">Type of therapy</span>
+                                <span class="right">
+                                    <span class="weak filter-count" v-if="filtersSelected.therapy > 0">{{filtersSelected.therapy}} selected</span>
+                                    <span v-if="showFilters.therapy">v</span>
+                                    <span v-if="!showFilters.therapy">^</span>
+                                </span>
+                                <br class="clr" />
+                                </h4>
+                            <filter-list v-show="showFilters.therapy" :name="'therapy'"></filter-list>
+                        </div>
 
-                    <div class="filter-box">
-                        <h4 @click="toggleFilter('financial')">
-                            <span class="left filter-header">Financial</span>
-                            <span class="right">
-                                <span class="weak filter-count" v-if="filtersSelected.financial > 0">{{filtersSelected.financial}} selected</span>
-                                <span v-if="showFilters.financial">v</span>
-                                <span v-if="!showFilters.financial">^</span>
-                            </span>
-                            <br class="clr" />
-                        </h4>
-                        <filter-list v-show="showFilters.financial" :name="'financial'"></filter-list>
-                    </div>
+                        <div class="filter-box">
+                            <h4 @click="toggleFilter('financial')">
+                                <span class="left filter-header">Financial</span>
+                                <span class="right">
+                                    <span class="weak filter-count" v-if="filtersSelected.financial > 0">{{filtersSelected.financial}} selected</span>
+                                    <span v-if="showFilters.financial">v</span>
+                                    <span v-if="!showFilters.financial">^</span>
+                                </span>
+                                <br class="clr" />
+                            </h4>
+                            <filter-list v-show="showFilters.financial" :name="'financial'"></filter-list>
+                        </div>
 
-                    <div class="filter-box">
-                        <h4 @click="toggleFilter('nutrition')">
-                            <span class="left filter-header">Nutrition</span>
-                            <span class="right">
-                                <span class="weak filter-count" v-if="filtersSelected.nutrition > 0">{{filtersSelected.nutrition}} selected</span>
-                                <span v-if="showFilters.nutrition">v</span>
-                                <span v-if="!showFilters.nutrition">^</span>
-                            </span>
-                            <br class="clr" />
-                        </h4>
-                        <filter-list v-show="showFilters.nutrition" :name="'nutrition'"></filter-list>
-                    </div>
-                    <div class="filter-box">
-                        <h4 @click="toggleFilter('medications')">
-                            <span class="left filter-header">Medications</span>
-                            <span class="right">
-                                <span class="weak filter-count" v-if="filtersSelected.medications > 0">{{filtersSelected.medications}} selected</span>
-                                <span v-if="showFilters.medications">v</span>
-                                <span v-if="!showFilters.medications">^</span>
-                            </span>
-                            <br class="clr" />
-                        </h4>
-                        <filter-list v-show="showFilters.medications" :name="'medications'"></filter-list>
-                    </div>
-                    <div class="filter-box">
-                        <h4 @click="toggleFilter('legal')">
-                            <span class="left filter-header">Legal</span>
-                            <span class="right">
-                                <span class="weak filter-count" v-if="filtersSelected.legal > 0">{{filtersSelected.legal}} selected</span>
-                                <span v-if="showFilters.legal">v</span>
-                                <span v-if="!showFilters.legal">^</span>
-                            </span>
-                            <br class="clr" />
-                        </h4>
-                        <filter-list v-show="showFilters.legal" :name="'legal'"></filter-list>
-                    </div>
+                        <div class="filter-box">
+                            <h4 @click="toggleFilter('nutrition')">
+                                <span class="left filter-header">Nutrition</span>
+                                <span class="right">
+                                    <span class="weak filter-count" v-if="filtersSelected.nutrition > 0">{{filtersSelected.nutrition}} selected</span>
+                                    <span v-if="showFilters.nutrition">v</span>
+                                    <span v-if="!showFilters.nutrition">^</span>
+                                </span>
+                                <br class="clr" />
+                            </h4>
+                            <filter-list v-show="showFilters.nutrition" :name="'nutrition'"></filter-list>
+                        </div>
+                        <div class="filter-box">
+                            <h4 @click="toggleFilter('medications')">
+                                <span class="left filter-header">Medications</span>
+                                <span class="right">
+                                    <span class="weak filter-count" v-if="filtersSelected.medications > 0">{{filtersSelected.medications}} selected</span>
+                                    <span v-if="showFilters.medications">v</span>
+                                    <span v-if="!showFilters.medications">^</span>
+                                </span>
+                                <br class="clr" />
+                            </h4>
+                            <filter-list v-show="showFilters.medications" :name="'medications'"></filter-list>
+                        </div>
+                        <div class="filter-box">
+                            <h4 @click="toggleFilter('legal')">
+                                <span class="left filter-header">Legal</span>
+                                <span class="right">
+                                    <span class="weak filter-count" v-if="filtersSelected.legal > 0">{{filtersSelected.legal}} selected</span>
+                                    <span v-if="showFilters.legal">v</span>
+                                    <span v-if="!showFilters.legal">^</span>
+                                </span>
+                                <br class="clr" />
+                            </h4>
+                            <filter-list v-show="showFilters.legal" :name="'legal'"></filter-list>
+                        </div>
 
-                    <div class="filter-box">
-                        <h4 @click="toggleFilter('userType')">
-                            <span class="left filter-header">
-                                <img src="filter.png" height="16" style="margin-right: 10px" />
-                                User Filters
-                            </span>
-                            <span class="right">
-                                <span v-if="showFilters.userType">v</span>
-                                <span v-if="!showFilters.userType">^</span>
-                            </span>
-                            <br class="clr" />
-                        </h4>
-                        <div v-show="showFilters.userType" id="user-filters">
-                            <div class="user-filter-row">
-                                <span class="user-filter-title">Type of injury:</span>
-                                <span class="user-filter-dorpdown"><filter-dorpdown name="injury"></filter-dorpdown></span>
-                            </div>
-                            <div class="user-filter-row">
-                                <span class="user-filter-title">User type:</span>
-                                <span class="user-filter-dorpdown"><filter-dorpdown name="user"></filter-dorpdown></span>
-                            </div>
-                            <div class="user-filter-row">
-                                <span class="user-filter-title">Location:</span>
-                                <span class="user-filter-dorpdown">
-                                    <span>
-                                        <a :class="{'dorpdown-selector': true, active: locationVisible }" @click="locationVisible = !locationVisible">
-                                            <span class="dorpdown-selector-title">any</span><span class="dorpdown-selector-arrow" v-if="!locationVisible">v</span><span class="dorpdown-selector-arrow" v-if="locationVisible">^</span>
-                                        </a>
-                                        <div class="dorpdown-container" v-show="locationVisible">
-                                            <p class="dorpdown-clear"><a :class="{disabled: true}">Clear Filters</a></p>
-                                            <div class="location-filter-wrap">
-                                                <div class="filter location-filter">
-                                                    <ul class="selected">
-                                                        <li v-for="location in locations" v-on:click="location.s = !location.s; loadFn();" :class="{ active: location.s }">{{ location.t }}</li>
-                                                    </ul>
+                        <div class="filter-box">
+                            <h4 @click="toggleFilter('userType')">
+                                <span class="left filter-header">
+                                    <img src="filter.png" height="16" style="margin-right: 10px" />
+                                    User Filters
+                                </span>
+                                <span class="right">
+                                    <span v-if="showFilters.userType">v</span>
+                                    <span v-if="!showFilters.userType">^</span>
+                                </span>
+                                <br class="clr" />
+                            </h4>
+                            <div v-show="showFilters.userType" id="user-filters">
+                                <div class="user-filter-row">
+                                    <span class="user-filter-title">Type of injury:</span>
+                                    <span class="user-filter-dorpdown"><filter-dorpdown name="injury"></filter-dorpdown></span>
+                                </div>
+                                <div class="user-filter-row">
+                                    <span class="user-filter-title">User type:</span>
+                                    <span class="user-filter-dorpdown"><filter-dorpdown name="user"></filter-dorpdown></span>
+                                </div>
+                                <div class="user-filter-row">
+                                    <span class="user-filter-title">Location:</span>
+                                    <span class="user-filter-dorpdown">
+                                        <span>
+                                            <a :class="{'dorpdown-selector': true, active: locationVisible }" @click="locationVisible = !locationVisible">
+                                                <span class="dorpdown-selector-title">{{locationDorpText}}</span><span class="dorpdown-selector-arrow" v-if="!locationVisible">v</span><span class="dorpdown-selector-arrow" v-if="locationVisible">^</span>
+                                            </a>
+                                            <div class="dorpdown-container" v-show="locationVisible">
+                                                <p class="dorpdown-clear"><a :class="{disabled: locations.find(function (l) { return l.s }) === undefined}" @click="clearLocations">Clear Filters</a></p>
+                                                <div class="location-filter-wrap">
+                                                    <div class="filter location-filter">
+                                                        <ul class="selected">
+                                                            <li v-for="location in locations" v-on:click="location.s = !location.s; loadFn();" :class="{ active: location.s }">{{ location.t }}</li>
+                                                        </ul>
+                                                        <br class="clr" />
+                                                    </div>
+                                                    <div class="location-auto-wrap">
+                                                        <v-autocomplete :search="locationSearch" @submit="locationSubmit" ref="locationField" placeholder="Add more cities or states"></v-autocomplete>
+                                                    </div>
                                                     <br class="clr" />
-                                                </div>
-                                                <div class="location-auto-wrap">
-                                                    <v-autocomplete :search="locationSearch" @submit="locationSubmit" ref="locationField" placeholder="Add more cities or states"></v-autocomplete>
                                                 </div>
                                                 <br class="clr" />
                                             </div>
-                                            <br class="clr" />
-                                        </div>
+                                        </span>
                                     </span>
-                                </span>
-                            </div>
-                            <div class="user-filter-row">
-                                <span class="user-filter-title">Time since injury:</span>
-                                <span class="user-filter-dorpdown"><filter-dorpdown name="date"></filter-dorpdown></span>
-                            </div>
-                            <div class="user-filter-row">
-                                <span class="user-filter-title">Recovery status:</span>
-                                <span class="user-filter-dorpdown"><filter-dorpdown name="recovery"></filter-dorpdown></span>
+                                </div>
+                                <div class="user-filter-row">
+                                    <span class="user-filter-title">Time since injury:</span>
+                                    <span class="user-filter-dorpdown"><filter-dorpdown name="date"></filter-dorpdown></span>
+                                </div>
+                                <div class="user-filter-row">
+                                    <span class="user-filter-title">Recovery status:</span>
+                                    <span class="user-filter-dorpdown"><filter-dorpdown name="recovery"></filter-dorpdown></span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="filter-box">
-                        <h4 @click="toggleFilter('injury')">
-                            <span class="left filter-header">Type of injury</span>
-                            <span class="right">
-                                <span class="weak filter-count" v-if="filtersSelected.injury > 0">{{filtersSelected.injury}} selected</span>
-                                <span v-if="showFilters.injury">v</span>
-                                <span v-if="!showFilters.injury">^</span>
-                            </span>
-                            <br class="clr" />
-                        </h4>
-                        <filter-list v-show="showFilters.injury" :name="'injury'"></filter-list>
-                    </div> -->
-
-                    <!-- <div class="filter-box">
-                        <h4 @click="toggleFilter('user')">
-                            <span class="left filter-header">User type</span>
-                            <span class="right">
-                                <span class="weak filter-count" v-if="filtersSelected.user > 0">{{filtersSelected.user}} selected</span>
-                                <span v-if="showFilters.user">v</span>
-                                <span v-if="!showFilters.user">^</span>
-                            </span>
-                            <br class="clr" />
-                        </h4>
-                        <filter-list v-show="showFilters.user" :name="'user'"></filter-list>
-                    </div> -->
-
-                    <!-- <div class="filter-box">
-                        <h4 @click="toggleFilter('years')">
-                            <span class="left">Years after injury</span>
-                            <span class="right">
-                                <span class="weak filter-count" v-if="yearsChanged">{{sliderValue[0]}} - {{sliderValue[1] == 11 ? '10+' : sliderValue[1]}} years</span>
-                                <span v-if="showFilters.years">v</span>
-                                <span v-if="!showFilters.years">^</span>
-                            </span>
-                            <br class="clr" />
-                        </h4>
-                        <div v-show="showFilters.years" class="year-filter-wrap">
-                            <vue-slider
-                                v-model="sliderValue"
-                                v-on:drag-end="loadFn"
-                                :tooltip="'always'"
-                                :tooltip-formatter="function (v) { return v == 11 ? '10+ years' : v + ' years' }"
-                                min="0"
-                                max="11"
-                            ></vue-slider>
-                        </div>
-                    </div> -->
-
-                    <!-- <div class="filter-box">
-                        <h4 @click="toggleFilter('location')">
-                            <span class="left">Location</span>
-                            <span class="right">
-                                <span class="weak filter-count" v-if="filtersSelected.location > 0">{{filtersSelected.location}} selected</span>
-                                <span v-if="showFilters.location">v</span>
-                                <span v-if="!showFilters.location">^</span>
-                            </span>
-                            <br class="clr" />
-                        </h4>
-                        <div v-show="showFilters.location" class="location-filter-wrap">
-                            <div class="filter location-filter">
-                                <ul class="selected">
-                                    <li v-for="location in locations" v-on:click="location.s = !location.s; loadFn();" :class="{ active: location.s }">{{ location.t }}</li>
-                                </ul>
-                                <br class="clr" />
-                            </div>
-                            <div class="location-auto-wrap">
-                                <v-autocomplete :search="locationSearch" @submit="locationSubmit" ref="locationField" placeholder="Add more cities or states"></v-autocomplete>
-                            </div>
-                            <br class="clr" />
-                        </div>
-                    </div> -->
-
-
-                        <!-- <div class="filter-box">
-                            <h4 @click="toggleFilter('recovery')">
-                                <span class="left">Stage of recovery</span>
-                                <span class="right">
-                                    <span class="weak filter-count" v-if="filtersSelected.recovery > 0">{{filtersSelected.recovery}} selected</span>
-                                    <span v-if="showFilters.recovery">v</span>
-                                    <span v-if="!showFilters.recovery">^</span>
-                                </span>
-                                <br class="clr" />
-                            </h4>
-                            <filter-list v-show="showFilters.recovery" :name="'recovery'"></filter-list>
-                        </div> -->
-
                 </div>
             </div>
         </div>
     </div>
+
 
     <script src="vue.min.js" type="text/javascript"></script>
     <script src="node_modules/vue-slider-component/dist/vue-slider-component.umd.js" type="text/javascript"></script>

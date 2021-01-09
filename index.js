@@ -38,10 +38,10 @@ var filters = [
     { i: 9, u: true, s: false, t: "traumatic brain injury", c: "injury" },
     { i: 10, u: true, s: false, t: "stroke", c: "injury" },
     { i: 11, u: true, s: false, t: "anoxic brain injury", c: "injury" },
-    { i: 13, u: true, s: false, t: "survivor", c: "user" },
-    { i: 14, u: true, s: false, t: "caregiver", c: "user" },
-    { i: 15, u: true, s: false, t: "medical provider", c: "user" },
-    { i: 16, u: true, s: false, t: "researcher", c: "user" },
+    { i: 13, u: true, s: false, t: "survivors", c: "user" },
+    { i: 14, u: true, s: false, t: "caregivers", c: "user" },
+    { i: 15, u: true, s: false, t: "medical providers", c: "user" },
+    { i: 16, u: true, s: false, t: "researchers", c: "user" },
     { i: 26, u: true, s: false, t: "unconscious", c: "recovery" },
     { i: 27, u: true, s: false, t: "minimally conscious", c: "recovery" },
     { i: 28, u: true, s: false, t: "starting to recover", c: "recovery" },
@@ -143,7 +143,7 @@ Vue.component("filter-list", {
 });
 
 var filterDorpdownTemplate = '<span> \
-<a :class="{\'dorpdown-selector\': true, active: visible }" @click="visible = !visible"> \
+<a :class="{\'dorpdown-selector\': true, active: visible }" @click="toggleDorp"> \
 <span class="dorpdown-selector-title">{{title}}</span><span class="dorpdown-selector-arrow" v-if="!visible">v</span><span class="dorpdown-selector-arrow" v-if="visible">^</span> \
 </a> \
 <div class="dorpdown-container" v-show="visible"> \
@@ -209,8 +209,22 @@ Vue.component('filter-dorpdown', {
                 }
                 this.loadFn();
             }
+        },
+        toggleDorp: function () {
+            if (this.visible) {
+                eventHub.$emit('close-user-dorps');
+                this.visible = false;
+            } else {
+                this.visible = true;
+            }
         }
     },
+    created: function () {
+        eventHub.$on('close-user-dorps', (function () {
+            console.log('here');
+            this.visible = false;
+        }).bind(this))
+    }
 })
 
 /**
@@ -225,7 +239,7 @@ Vue.component('filter-dorpdown', {
         date: 'Oct 28',
         title: 'Can anyone recommend a neurologist with brain injury experience in Chicago?',
         text: "My dad's been dealing with seizures and I think he's on too many meds. The facility he's at won't adjust anything until he sees a neurologist.",
-        tags: [ 'neurologists', 'chicago ' ],
+        tags: [ 'neurologists', 'emotional control ' ],
         answers: 2,
         upvotes: 24,
     },
@@ -318,18 +332,18 @@ Vue.component('main-col-filters', {
  * Main app
  */
 let app = new Vue({
-    el: "#container",
+    el: "#app",
     data: {
         loading: true,
         results: 84,
-        showSidebar: true,
+        showSidebar: false,
         questions: questions,
         sliderValue: [0, 11],
         locations: defaultLocations.map(function (v) { return { ...v } }),
         showFilters: {
             symptoms: false,
             therapy: false,
-            userType: true,
+            userType: false,
             financial: false,
             nutrition: false,
             medications: false,
@@ -412,6 +426,23 @@ let app = new Vue({
             }
 
             return same;
+        },
+        locationDorpText: function () {
+            var locationFilters = this.locations.filter(function (l) { return l.s });
+
+            if (locationFilters.length > 0) {
+                var string = locationFilters.map(function (filter) {
+                    return filter.t;
+                }).join(', ');
+
+                if (string.length > 22) {
+                    return string.substring(0, 20) + '...';
+                }
+
+                return string;
+            } else {
+                return 'any';
+            }
         },
         yearsChanged: function () {
             return this.sliderValue[0] != 0 || this.sliderValue[1] != 11;
@@ -501,6 +532,10 @@ let app = new Vue({
             this.sliderValue = [0, 11];
             this.locations = defaultLocations.map(function (v) { return { ...v } });
         },
+        clearLocations: function () {
+            this.locations = defaultLocations.map(function (v) { return { ...v } });
+            this.loadFn();
+        },
         loadFn: function () {
             eventHub.$emit("load");
         },
@@ -523,6 +558,18 @@ let app = new Vue({
             }
             // this.$refs.locationField.$el.children[0].children[0].blur();
         },
+        closeUserFilter: function (e) {
+            var targetElement = e.target;
+
+            do {
+                if (targetElement.className === 'user-filter-dorpdown') {
+                    return;
+                }
+                targetElement = targetElement.parentNode;
+            } while(targetElement);
+
+            eventHub.$emit('close-user-dorps');
+        }
     }
 });
 
