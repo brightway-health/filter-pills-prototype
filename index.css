@@ -221,6 +221,11 @@ html {
   cursor: pointer;
 }
 
+.filter-box h4.inactive:hover {
+    background-color: inherit;
+    cursor: default;
+}
+
 #user-filters {
     padding: 0 25px 10px;
 }
@@ -705,6 +710,10 @@ html {
     text-decoration: underline;
 }
 
+.filter-box h4.inactive .filter-header:hover {
+    text-decoration: none;
+}
+
 #main-col-filters {
     margin: 20px 0;
 }
@@ -754,4 +763,46 @@ html {
 
 #user-filters-sentence {
     margin: 0 5px;
+}
+
+#search {
+    width: 300px;
+    margin: 0 auto 20px;
+}
+
+#search-box {
+    width: 270px;
+    margin: 0;
+    box-sizing: border-box;
+    display: block;
+    float: left;
+    background-color: #fff;
+    border: 0;
+    height: 40px;
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+    padding: 0 10px;
+    font-size: 16px;
+}
+
+#search-box:focus {
+    outline: 0;
+}
+
+#search-cancel-container {
+    width: 30px;
+    box-sizing: border-box;
+    display: block;
+    float: left;
+    background-color: #fff;
+    text-align: center;
+    line-height: 40px;
+    height: 40px;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+
+#search-cancel:hover {
+    cursor: pointer;
+    color: #444;
 }

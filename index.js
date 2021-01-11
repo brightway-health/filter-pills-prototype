@@ -11,7 +11,7 @@ var filters = [
     { i: 5, s: true, d: true, m: true, t: "physical therapy", c: "therapy" },
     { i: 6, s: true, d: true, m: true, t: "occupational therapy", c: "therapy" },
     { i: 7, s: false, t: "emotional therapy", c: "therapy" },
-    { i: 8, s: false, t: "recretional therapy", c: "therapy" },
+    { i: 8, s: false, t: "recreational therapy", c: "therapy" },
     { i: 17, s: false, t: "employment", c: "symptoms" },
     { i: 18, s: false, t: "emotional control", c: "symptoms" },
     { i: 19, s: false, t: "cognitive therapy", c: "therapy" },
@@ -122,11 +122,11 @@ var filterListTemplate = '<div class="filter">\
 </div>';
 
 Vue.component("filter-list", {
-    props: ["name"],
+    props: ["name", "search"],
     computed: {
         filters: function () {
             return this.$store.filters.filter(function (v) {
-                return v.c === this.name;
+                return v.c === this.name && ((typeof this.search === 'string' && this.search !== '' && v.t.toLowerCase().includes(this.search.toLowerCase())) || this.search === '');
             }.bind(this))
         }
     },
@@ -221,7 +221,6 @@ Vue.component('filter-dorpdown', {
     },
     created: function () {
         eventHub.$on('close-user-dorps', (function () {
-            console.log('here');
             this.visible = false;
         }).bind(this))
     }
@@ -350,8 +349,42 @@ let app = new Vue({
             legal: false,
         },
         locationVisible: false,
+        search: '',
     },
     computed: {
+        hasSearch: function () {
+            return this.search != '';
+        },
+        showTagBasedOnSearch: function () {
+            if (typeof this.search !== 'string' || this.search == '') {
+                return {
+                    symptoms: true,
+                    therapy: true,
+                    financial: true,
+                    nutrition: true,
+                    medications: true,
+                    legal: true,
+                    user: true,
+                };
+            } else {
+                var filterFn = (function (category) {
+                    return (function (filter) {
+                        return filter.c === category &&
+                            filter.t.toLowerCase().includes(this.search.toLowerCase());
+                    }).bind(this);
+                }).bind(this);
+
+                return {
+                    symptoms: filters.filter(filterFn('symptoms')).length > 0,
+                    therapy: filters.filter(filterFn('therapy')).length > 0,
+                    financial: filters.filter(filterFn('financial')).length > 0,
+                    nutrition: filters.filter(filterFn('nutrition')).length > 0,
+                    medications: filters.filter(filterFn('medications')).length > 0,
+                    legal: filters.filter(filterFn('legal')).length > 0,
+                    user: false,
+                }
+            }
+        },
         filtersSelected: function () {
             var reducer = function (type) {
                 return function (total, filter) {

@@ -65,82 +65,89 @@
                         <a class="pill" id="open-filter-btn" @click="toggleSidebar"><img src="filter.png" height="16" style="margin: 0 8px 0 0" />View Tags &ndash; <span class="weak">{{filtersSelected.total}} selected</span></a>
                     </div>
                     <div id="filters-shown" v-show="showSidebar">
-                        <div class="filter-box">
-                            <h4 @click="toggleFilter('symptoms')"><div>
+                        <div id="search">
+                            <input placeholder="Search tags" id="search-box" v-model="search" />
+                            <div id="search-cancel-container">
+                                <a id="search-cancel" @click="search = ''" v-show="search != ''">x</a>
+                            </div>
+                            <br class="clr" />
+                        </div>
+                        <div class="filter-box" v-show="showTagBasedOnSearch.symptoms">
+                            <h4 @click="toggleFilter('symptoms')" :class="{ inactive: hasSearch }"><div>
                                 <span class="left filter-header">Symptoms & daily life</span>
                                 <span class="right">
-                                    <span class="weak filter-count" v-if="filtersSelected.symptoms > 0">{{filtersSelected.symptoms}} selected</span>
-                                    <span v-if="showFilters.symptoms">v</span>
-                                    <span v-if="!showFilters.symptoms">^</span>
+                                    <span class="weak filter-count" v-if="!hasSearch && filtersSelected.symptoms > 0">{{filtersSelected.symptoms}} selected</span>
+                                    <span v-if="!hasSearch && showFilters.symptoms">v</span>
+                                    <span v-if="!hasSearch && !showFilters.symptoms">^</span>
                                 </span>
                                 <br class="clr" />
                             </h4>
-                            <filter-list v-show="showFilters.symptoms" :name="'symptoms'"></filter-list>
+                            <filter-list v-show="hasSearch || showFilters.symptoms" :name="'symptoms'" :search="search"></filter-list>
                         </div>
-                        <div class="filter-box">
-                            <h4 @click="toggleFilter('therapy')">
+                        <div class="filter-box" v-show="showTagBasedOnSearch.therapy">
+                            <h4 @click="toggleFilter('therapy')" :class="{ inactive: hasSearch }">
                                 <span class="left filter-header">Type of therapy</span>
                                 <span class="right">
-                                    <span class="weak filter-count" v-if="filtersSelected.therapy > 0">{{filtersSelected.therapy}} selected</span>
-                                    <span v-if="showFilters.therapy">v</span>
-                                    <span v-if="!showFilters.therapy">^</span>
+                                    <span class="weak filter-count" v-if="!hasSearch && filtersSelected.therapy > 0">{{filtersSelected.therapy}} selected</span>
+                                    <span v-if="!hasSearch && showFilters.therapy">v</span>
+                                    <span v-if="!hasSearch && !showFilters.therapy">^</span>
                                 </span>
                                 <br class="clr" />
                                 </h4>
-                            <filter-list v-show="showFilters.therapy" :name="'therapy'"></filter-list>
+                            <filter-list v-show="hasSearch || showFilters.therapy" :name="'therapy'" :search="search"></filter-list>
                         </div>
 
-                        <div class="filter-box">
-                            <h4 @click="toggleFilter('financial')">
+                        <div class="filter-box" v-show="showTagBasedOnSearch.financial">
+                            <h4 @click="toggleFilter('financial')" :class="{ inactive: hasSearch }">
                                 <span class="left filter-header">Financial</span>
                                 <span class="right">
-                                    <span class="weak filter-count" v-if="filtersSelected.financial > 0">{{filtersSelected.financial}} selected</span>
-                                    <span v-if="showFilters.financial">v</span>
-                                    <span v-if="!showFilters.financial">^</span>
+                                    <span class="weak filter-count" v-if="!hasSearch && filtersSelected.financial > 0">{{filtersSelected.financial}} selected</span>
+                                    <span v-if="!hasSearch && showFilters.financial">v</span>
+                                    <span v-if="!hasSearch && !showFilters.financial">^</span>
                                 </span>
                                 <br class="clr" />
                             </h4>
-                            <filter-list v-show="showFilters.financial" :name="'financial'"></filter-list>
+                            <filter-list v-show="hasSearch || showFilters.financial" :name="'financial'" :search="search"></filter-list>
                         </div>
 
-                        <div class="filter-box">
-                            <h4 @click="toggleFilter('nutrition')">
+                        <div class="filter-box" v-show="showTagBasedOnSearch.nutrition">
+                            <h4 @click="toggleFilter('nutrition')" :class="{ inactive: hasSearch }">
                                 <span class="left filter-header">Nutrition</span>
                                 <span class="right">
-                                    <span class="weak filter-count" v-if="filtersSelected.nutrition > 0">{{filtersSelected.nutrition}} selected</span>
-                                    <span v-if="showFilters.nutrition">v</span>
-                                    <span v-if="!showFilters.nutrition">^</span>
+                                    <span class="weak filter-count" v-if="!hasSearch && filtersSelected.nutrition > 0">{{filtersSelected.nutrition}} selected</span>
+                                    <span v-if="!hasSearch && showFilters.nutrition">v</span>
+                                    <span v-if="!hasSearch && !showFilters.nutrition">^</span>
                                 </span>
                                 <br class="clr" />
                             </h4>
-                            <filter-list v-show="showFilters.nutrition" :name="'nutrition'"></filter-list>
+                            <filter-list v-show="hasSearch || showFilters.nutrition" :name="'nutrition'" :search="search"></filter-list>
                         </div>
-                        <div class="filter-box">
-                            <h4 @click="toggleFilter('medications')">
+                        <div class="filter-box" v-show="showTagBasedOnSearch.medications">
+                            <h4 @click="toggleFilter('medications')" :class="{ inactive: hasSearch }">
                                 <span class="left filter-header">Medications</span>
                                 <span class="right">
-                                    <span class="weak filter-count" v-if="filtersSelected.medications > 0">{{filtersSelected.medications}} selected</span>
-                                    <span v-if="showFilters.medications">v</span>
-                                    <span v-if="!showFilters.medications">^</span>
+                                    <span class="weak filter-count" v-if="!hasSearch && filtersSelected.medications > 0">{{filtersSelected.medications}} selected</span>
+                                    <span v-if="!hasSearch && showFilters.medications">v</span>
+                                    <span v-if="!hasSearch && !showFilters.medications">^</span>
                                 </span>
                                 <br class="clr" />
                             </h4>
-                            <filter-list v-show="showFilters.medications" :name="'medications'"></filter-list>
+                            <filter-list v-show="hasSearch || showFilters.medications" :name="'medications'" :search="search"></filter-list>
                         </div>
-                        <div class="filter-box">
+                        <div class="filter-box" v-show="showTagBasedOnSearch.legal" :class="{ inactive: hasSearch }">
                             <h4 @click="toggleFilter('legal')">
                                 <span class="left filter-header">Legal</span>
                                 <span class="right">
-                                    <span class="weak filter-count" v-if="filtersSelected.legal > 0">{{filtersSelected.legal}} selected</span>
-                                    <span v-if="showFilters.legal">v</span>
-                                    <span v-if="!showFilters.legal">^</span>
+                                    <span class="weak filter-count" v-if="!hasSearch && filtersSelected.legal > 0">{{filtersSelected.legal}} selected</span>
+                                    <span v-if="!hasSearch && showFilters.legal">v</span>
+                                    <span v-if="!hasSearch && !showFilters.legal">^</span>
                                 </span>
                                 <br class="clr" />
                             </h4>
-                            <filter-list v-show="showFilters.legal" :name="'legal'"></filter-list>
+                            <filter-list v-show="hasSearch || showFilters.legal" :name="'legal'" :search="search"></filter-list>
                         </div>
 
-                        <div class="filter-box">
+                        <div class="filter-box" v-show="showTagBasedOnSearch.user">
                             <h4 @click="toggleFilter('userType')">
                                 <span class="left filter-header">
                                     <img src="filter.png" height="16" style="margin-right: 10px" />
