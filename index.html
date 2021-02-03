@@ -27,8 +27,11 @@
                     <div id="questions">
                         <h1>Browse Questions</h1>
                         <div id="main-col-filters">
-                            <main-col-filters :number-selected="filtersSelected.total"></main-col-filters>
-                            <span @click="resetFilters" id="reset-tags" v-show="!myTagsSelected">Reset to my tags</span>
+                            <label id="main-col-filters-label">Selected topics:</label>
+                            <div>
+                                <main-col-filters :number-selected="filtersSelected.total"></main-col-filters>
+                                <span @click="resetFilters" id="reset-tags" v-show="!myTagsSelected">Reset to my tags</span>
+                            </div>
                             <br class="clr" />
                         </div>
                         <div id="user-filters-sentence" v-if="hasUserFilters">{{userFiltersSentence}}</div>
@@ -53,7 +56,7 @@
                 <div id="col2-placeholder"></div>
                 <div id="col2">
                     <h2 id="filter-title" @click="toggleSidebar">
-                        <span class="left">View Questions By Tag</span>
+                        <span class="left">View Questions By Topic</span>
                         <span class="right">
                             <span v-show="!showSidebar">^</span>
                             <span v-show="showSidebar">v</span>
@@ -62,7 +65,7 @@
                     <br class="clr" />
                     <a @click="clearFilters" id="view-all-link" :class="{disabled: filtersSelected.total === 0}">View All Questions</a>
                     <div id="filters-hidden" v-show="!showSidebar">
-                        <a class="pill" id="open-filter-btn" @click="toggleSidebar"><img src="filter.png" height="16" style="margin: 0 8px 0 0" />View Tags &ndash; <span class="weak">{{filtersSelected.total}} selected</span></a>
+                        <a class="pill" id="open-filter-btn" @click="toggleSidebar"><img src="filter.png" height="16" style="margin: 0 8px 0 0" />View Topics &ndash; <span class="weak">{{filtersSelected.total}} selected</span></a>
                     </div>
                     <div id="filters-shown" v-show="showSidebar">
                         <div id="search">

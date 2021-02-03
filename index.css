@@ -325,7 +325,7 @@ html {
   border-radius: 8px;
   background-color: #fff;
   border: 1px solid #ccc;
-  color: #000;
+  color: #6a6a6a;
 }
 
 .filter ul.selected li:hover, .dorpdown-filter:hover {
@@ -334,12 +334,12 @@ html {
 }
 
 .filter ul.selected li.active:hover, .dorpdown-filter.active:hover {
-    background-color: #888;
+    background-color: #92bdf6;
 }
 
 .filter ul.selected li.active, .dorpdown-filter.active {
-    background-color: #666;
-    color: #fff;
+    background-color: #BAD4F4;
+    color: black;
 }
 
 .filter .filter-input {
@@ -714,8 +714,16 @@ html {
     text-decoration: none;
 }
 
+#main-col-filters-label {
+    margin-top: 5px;
+    display: inline-block;
+    width: 150px;
+    font-weight: bold;
+}
+
 #main-col-filters {
     margin: 20px 0;
+    display: flex;
 }
 
 #main-col-filters a {
@@ -724,8 +732,8 @@ html {
   padding: 3px 8px;
   border-radius: 8px;
   background-color: #fff;
-  border: 2px solid #666;
-  color: #000;
+  border: 1px solid #ccc;
+  color: #6a6a6a;
 }
 
 #main-col-filters a:hover {
@@ -734,12 +742,12 @@ html {
 }
 
 #main-col-filters a.active:hover {
-    background-color: #888;
+    background-color: #92bdf6;
 }
 
 #main-col-filters a.active {
-    background-color: #666;
-    color: #fff;
+    background-color: #BAD4F4;
+    color: black;
 }
 
 #main-col-filters #reset-tags {
