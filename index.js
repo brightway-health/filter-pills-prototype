@@ -65,7 +65,7 @@ var locations = [
     'Evanston, IL',
     'Houston, TX',
     'Los Angeles, CA',
-    // 'New York, NY',
+    'New York, NY',
     'Minneapolis, MN',
     'Philadelphia, PA',
     'Pittsburgh, PA',
@@ -77,7 +77,7 @@ var locations = [
     'California',
     'Illinois',
     'Minnesota',
-    // 'New York',
+    'New York',
     'Pennsylvania',
     'Texas',
 ];
@@ -347,9 +347,14 @@ let app = new Vue({
             nutrition: false,
             medications: false,
             legal: false,
+            injury: false,
+            user: false,
+            date: false,
+            location: false,
         },
         locationVisible: false,
         search: '',
+        topicsSelected: true,
     },
     computed: {
         hasSearch: function () {
@@ -364,7 +369,10 @@ let app = new Vue({
                     nutrition: true,
                     medications: true,
                     legal: true,
+                    injury: true,
                     user: true,
+                    date: true,
+                    location: true,
                 };
             } else {
                 var filterFn = (function (category) {
@@ -374,6 +382,10 @@ let app = new Vue({
                     }).bind(this);
                 }).bind(this);
 
+                const filterLocations = l => {
+                    return l.toLowerCase().includes(this.search.toLowerCase());
+                }
+
                 return {
                     symptoms: filters.filter(filterFn('symptoms')).length > 0,
                     therapy: filters.filter(filterFn('therapy')).length > 0,
@@ -381,9 +393,25 @@ let app = new Vue({
                     nutrition: filters.filter(filterFn('nutrition')).length > 0,
                     medications: filters.filter(filterFn('medications')).length > 0,
                     legal: filters.filter(filterFn('legal')).length > 0,
-                    user: false,
+                    injury: filters.filter(filterFn('injury')).length > 0,
+                    user: filters.filter(filterFn('user')).length > 0,
+                    date: filters.filter(filterFn('date')).length > 0,
+                    location: locations.filter(filterLocations).length > 0,
                 }
             }
+        },
+        filteredLocations: function () {
+            const filterLocations = l => {
+                return l.toLowerCase().includes(this.search.toLowerCase());
+            }
+
+            if (typeof this.search === 'string' && this.search !== '') {
+                return locations.filter(filterLocations).map( (l) => {
+                    const locationInList = this.locations.find(location => location.t === l);
+                    return { t: l, s: locationInList && locationInList.s };
+                });
+            }
+            return this.locations;
         },
         filtersSelected: function () {
             var reducer = function (type) {
@@ -602,7 +630,17 @@ let app = new Vue({
             } while(targetElement);
 
             eventHub.$emit('close-user-dorps');
-        }
+        },
+        toggleLocation: function(l) {
+            l.s = !l.s;
+            const cl = this.locations.find(loc => loc.t === l.t);
+            if (cl) {
+                cl.s = false;
+                this.locations = this.locations.filter(loc => loc.t !== l.t);
+            } else {
+                this.locations.push(l);
+            }
+        },
     }
 });
 

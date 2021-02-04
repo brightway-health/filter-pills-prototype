@@ -75,138 +75,176 @@
                             </div>
                             <br class="clr" />
                         </div>
-                        <div class="filter-box" v-show="showTagBasedOnSearch.symptoms">
-                            <h4 @click="toggleFilter('symptoms')" :class="{ inactive: hasSearch }"><div>
-                                <span class="left filter-header">Symptoms & daily life</span>
-                                <span class="right">
-                                    <span class="weak filter-count" v-if="!hasSearch && filtersSelected.symptoms > 0">{{filtersSelected.symptoms}} selected</span>
-                                    <span v-if="!hasSearch && showFilters.symptoms">v</span>
-                                    <span v-if="!hasSearch && !showFilters.symptoms">^</span>
-                                </span>
-                                <br class="clr" />
-                            </h4>
-                            <filter-list v-show="hasSearch || showFilters.symptoms" :name="'symptoms'" :search="search"></filter-list>
-                        </div>
-                        <div class="filter-box" v-show="showTagBasedOnSearch.therapy">
-                            <h4 @click="toggleFilter('therapy')" :class="{ inactive: hasSearch }">
-                                <span class="left filter-header">Type of therapy</span>
-                                <span class="right">
-                                    <span class="weak filter-count" v-if="!hasSearch && filtersSelected.therapy > 0">{{filtersSelected.therapy}} selected</span>
-                                    <span v-if="!hasSearch && showFilters.therapy">v</span>
-                                    <span v-if="!hasSearch && !showFilters.therapy">^</span>
-                                </span>
-                                <br class="clr" />
-                                </h4>
-                            <filter-list v-show="hasSearch || showFilters.therapy" :name="'therapy'" :search="search"></filter-list>
+
+                        <div id="filter-tabs">
+                            <button class="btn"
+                                    style="margin-right: 15px"
+                                    :class="{ active: topicsSelected }"
+                                    @click="topicsSelected=true"
+                            >Topics</button>
+                            <button
+                                    class="btn"
+                                    :class="{ active: !topicsSelected }"
+                                    @click="topicsSelected=false"
+                            >Filters</button>
                         </div>
 
-                        <div class="filter-box" v-show="showTagBasedOnSearch.financial">
-                            <h4 @click="toggleFilter('financial')" :class="{ inactive: hasSearch }">
-                                <span class="left filter-header">Financial</span>
-                                <span class="right">
-                                    <span class="weak filter-count" v-if="!hasSearch && filtersSelected.financial > 0">{{filtersSelected.financial}} selected</span>
-                                    <span v-if="!hasSearch && showFilters.financial">v</span>
-                                    <span v-if="!hasSearch && !showFilters.financial">^</span>
-                                </span>
-                                <br class="clr" />
-                            </h4>
-                            <filter-list v-show="hasSearch || showFilters.financial" :name="'financial'" :search="search"></filter-list>
-                        </div>
-
-                        <div class="filter-box" v-show="showTagBasedOnSearch.nutrition">
-                            <h4 @click="toggleFilter('nutrition')" :class="{ inactive: hasSearch }">
-                                <span class="left filter-header">Nutrition</span>
-                                <span class="right">
-                                    <span class="weak filter-count" v-if="!hasSearch && filtersSelected.nutrition > 0">{{filtersSelected.nutrition}} selected</span>
-                                    <span v-if="!hasSearch && showFilters.nutrition">v</span>
-                                    <span v-if="!hasSearch && !showFilters.nutrition">^</span>
-                                </span>
-                                <br class="clr" />
-                            </h4>
-                            <filter-list v-show="hasSearch || showFilters.nutrition" :name="'nutrition'" :search="search"></filter-list>
-                        </div>
-                        <div class="filter-box" v-show="showTagBasedOnSearch.medications">
-                            <h4 @click="toggleFilter('medications')" :class="{ inactive: hasSearch }">
-                                <span class="left filter-header">Medications</span>
-                                <span class="right">
-                                    <span class="weak filter-count" v-if="!hasSearch && filtersSelected.medications > 0">{{filtersSelected.medications}} selected</span>
-                                    <span v-if="!hasSearch && showFilters.medications">v</span>
-                                    <span v-if="!hasSearch && !showFilters.medications">^</span>
-                                </span>
-                                <br class="clr" />
-                            </h4>
-                            <filter-list v-show="hasSearch || showFilters.medications" :name="'medications'" :search="search"></filter-list>
-                        </div>
-                        <div class="filter-box" v-show="showTagBasedOnSearch.legal" :class="{ inactive: hasSearch }">
-                            <h4 @click="toggleFilter('legal')">
-                                <span class="left filter-header">Legal</span>
-                                <span class="right">
-                                    <span class="weak filter-count" v-if="!hasSearch && filtersSelected.legal > 0">{{filtersSelected.legal}} selected</span>
-                                    <span v-if="!hasSearch && showFilters.legal">v</span>
-                                    <span v-if="!hasSearch && !showFilters.legal">^</span>
-                                </span>
-                                <br class="clr" />
-                            </h4>
-                            <filter-list v-show="hasSearch || showFilters.legal" :name="'legal'" :search="search"></filter-list>
-                        </div>
-
-                        <div class="filter-box" v-show="showTagBasedOnSearch.user">
-                            <h4 @click="toggleFilter('userType')">
-                                <span class="left filter-header">
-                                    <img src="filter.png" height="16" style="margin-right: 10px" />
-                                    User Filters
-                                </span>
-                                <span class="right">
-                                    <span v-if="showFilters.userType">v</span>
-                                    <span v-if="!showFilters.userType">^</span>
-                                </span>
-                                <br class="clr" />
-                            </h4>
-                            <div v-show="showFilters.userType" id="user-filters">
-                                <div class="user-filter-row">
-                                    <span class="user-filter-title">Type of injury:</span>
-                                    <span class="user-filter-dorpdown"><filter-dorpdown name="injury"></filter-dorpdown></span>
-                                </div>
-                                <div class="user-filter-row">
-                                    <span class="user-filter-title">User type:</span>
-                                    <span class="user-filter-dorpdown"><filter-dorpdown name="user"></filter-dorpdown></span>
-                                </div>
-                                <div class="user-filter-row">
-                                    <span class="user-filter-title">Location:</span>
-                                    <span class="user-filter-dorpdown">
-                                        <span>
-                                            <a :class="{'dorpdown-selector': true, active: locationVisible }" @click="locationVisible = !locationVisible">
-                                                <span class="dorpdown-selector-title">{{locationDorpText}}</span><span class="dorpdown-selector-arrow" v-if="!locationVisible">v</span><span class="dorpdown-selector-arrow" v-if="locationVisible">^</span>
-                                            </a>
-                                            <div class="dorpdown-container" v-show="locationVisible">
-                                                <p class="dorpdown-clear"><a :class="{disabled: locations.find(function (l) { return l.s }) === undefined}" @click="clearLocations">Clear Filters</a></p>
-                                                <div class="location-filter-wrap">
-                                                    <div class="filter location-filter">
-                                                        <ul class="selected">
-                                                            <li v-for="location in locations" v-on:click="location.s = !location.s; loadFn();" :class="{ active: location.s }">{{ location.t }}</li>
-                                                        </ul>
-                                                        <br class="clr" />
-                                                    </div>
-                                                    <div class="location-auto-wrap">
-                                                        <v-autocomplete :search="locationSearch" @submit="locationSubmit" ref="locationField" placeholder="Add more cities or states"></v-autocomplete>
-                                                    </div>
-                                                    <br class="clr" />
-                                                </div>
-                                                <br class="clr" />
-                                            </div>
-                                        </span>
+                        <div id="topic-boxes" v-show="topicsSelected">
+                            <div class="filter-box" v-show="showTagBasedOnSearch.symptoms">
+                                <h4 @click="toggleFilter('symptoms')" :class="{ inactive: hasSearch }"><div>
+                                    <span class="left filter-header">Symptoms & daily life</span>
+                                    <span class="right">
+                                        <span class="weak filter-count" v-if="!hasSearch && filtersSelected.symptoms > 0">{{filtersSelected.symptoms}} selected</span>
+                                        <span v-if="!hasSearch && showFilters.symptoms">v</span>
+                                        <span v-if="!hasSearch && !showFilters.symptoms">^</span>
                                     </span>
-                                </div>
-                                <div class="user-filter-row">
-                                    <span class="user-filter-title">Time since injury:</span>
-                                    <span class="user-filter-dorpdown"><filter-dorpdown name="date"></filter-dorpdown></span>
-                                </div>
-                                <div class="user-filter-row">
-                                    <span class="user-filter-title">Recovery status:</span>
-                                    <span class="user-filter-dorpdown"><filter-dorpdown name="recovery"></filter-dorpdown></span>
-                                </div>
+                                    <br class="clr" />
+                                </h4>
+                                <filter-list v-show="hasSearch || showFilters.symptoms" :name="'symptoms'" :search="search"></filter-list>
+                            </div>
+                            <div class="filter-box" v-show="showTagBasedOnSearch.therapy">
+                                <h4 @click="toggleFilter('therapy')" :class="{ inactive: hasSearch }">
+                                    <span class="left filter-header">Type of therapy</span>
+                                    <span class="right">
+                                        <span class="weak filter-count" v-if="!hasSearch && filtersSelected.therapy > 0">{{filtersSelected.therapy}} selected</span>
+                                        <span v-if="!hasSearch && showFilters.therapy">v</span>
+                                        <span v-if="!hasSearch && !showFilters.therapy">^</span>
+                                    </span>
+                                    <br class="clr" />
+                                    </h4>
+                                <filter-list v-show="hasSearch || showFilters.therapy" :name="'therapy'" :search="search"></filter-list>
+                            </div>
+
+                            <div class="filter-box" v-show="showTagBasedOnSearch.financial">
+                                <h4 @click="toggleFilter('financial')" :class="{ inactive: hasSearch }">
+                                    <span class="left filter-header">Financial</span>
+                                    <span class="right">
+                                        <span class="weak filter-count" v-if="!hasSearch && filtersSelected.financial > 0">{{filtersSelected.financial}} selected</span>
+                                        <span v-if="!hasSearch && showFilters.financial">v</span>
+                                        <span v-if="!hasSearch && !showFilters.financial">^</span>
+                                    </span>
+                                    <br class="clr" />
+                                </h4>
+                                <filter-list v-show="hasSearch || showFilters.financial" :name="'financial'" :search="search"></filter-list>
+                            </div>
+
+                            <div class="filter-box" v-show="showTagBasedOnSearch.nutrition">
+                                <h4 @click="toggleFilter('nutrition')" :class="{ inactive: hasSearch }">
+                                    <span class="left filter-header">Nutrition</span>
+                                    <span class="right">
+                                        <span class="weak filter-count" v-if="!hasSearch && filtersSelected.nutrition > 0">{{filtersSelected.nutrition}} selected</span>
+                                        <span v-if="!hasSearch && showFilters.nutrition">v</span>
+                                        <span v-if="!hasSearch && !showFilters.nutrition">^</span>
+                                    </span>
+                                    <br class="clr" />
+                                </h4>
+                                <filter-list v-show="hasSearch || showFilters.nutrition" :name="'nutrition'" :search="search"></filter-list>
+                            </div>
+                            <div class="filter-box" v-show="showTagBasedOnSearch.medications">
+                                <h4 @click="toggleFilter('medications')" :class="{ inactive: hasSearch }">
+                                    <span class="left filter-header">Medications</span>
+                                    <span class="right">
+                                        <span class="weak filter-count" v-if="!hasSearch && filtersSelected.medications > 0">{{filtersSelected.medications}} selected</span>
+                                        <span v-if="!hasSearch && showFilters.medications">v</span>
+                                        <span v-if="!hasSearch && !showFilters.medications">^</span>
+                                    </span>
+                                    <br class="clr" />
+                                </h4>
+                                <filter-list v-show="hasSearch || showFilters.medications" :name="'medications'" :search="search"></filter-list>
+                            </div>
+                            <div class="filter-box" v-show="showTagBasedOnSearch.legal" :class="{ inactive: hasSearch }">
+                                <h4 @click="toggleFilter('legal')">
+                                    <span class="left filter-header">Legal</span>
+                                    <span class="right">
+                                        <span class="weak filter-count" v-if="!hasSearch && filtersSelected.legal > 0">{{filtersSelected.legal}} selected</span>
+                                        <span v-if="!hasSearch && showFilters.legal">v</span>
+                                        <span v-if="!hasSearch && !showFilters.legal">^</span>
+                                    </span>
+                                    <br class="clr" />
+                                </h4>
+                                <filter-list v-show="hasSearch || showFilters.legal" :name="'legal'" :search="search"></filter-list>
                             </div>
                         </div>
+
+                        <div id="filter-boxes" v-show="!topicsSelected">
+                            <div v-show="showTagBasedOnSearch.injury" class="filter-box">
+                                <h4 @click="toggleFilter('injury')" :class="{ inactive: hasSearch }">
+                                    <span class="left filter-header">Type of injury</span>
+                                    <span class="right">
+                                        <span class="weak filter-count" v-if="!hasSearch && filtersSelected.injury > 0">{{filtersSelected.injury}} selected</span>
+                                        <span v-if="!hasSearch && showFilters.injury">v</span>
+                                        <span v-if="!hasSearch && !showFilters.injury">^</span>
+                                    </span>
+                                    <br class="clr" />
+                                </h4>
+                                <filter-list v-show="hasSearch || showFilters.injury" :name="'injury'" :search="search"></filter-list>
+                            </div>
+
+                            <div v-show="showTagBasedOnSearch.user" class="filter-box">
+                                <h4 @click="toggleFilter('user')" :class="{ inactive: hasSearch }">
+                                    <span class="left filter-header">User type</span>
+                                    <span class="right">
+                                        <span class="weak filter-count" v-if="!hasSearch && filtersSelected.user > 0">{{filtersSelected.user}} selected</span>
+                                        <span v-if="!hasSearch && showFilters.user">v</span>
+                                        <span v-if="!hasSearch && !showFilters.user">^</span>
+                                    </span>
+                                    <br class="clr" />
+                                </h4>
+                                <filter-list v-show="hasSearch || showFilters.user" :name="'user'" :search="search"></filter-list>
+                            </div>
+
+                            <div v-show="showTagBasedOnSearch.date" class="filter-box">
+                                <h4 @click="toggleFilter('date')" :class="{ inactive: hasSearch }">
+                                    <span class="left filter-header">Time since injury</span>
+                                    <span class="right">
+                                        <span class="weak filter-count" v-if="!hasSearch && filtersSelected.date > 0">{{filtersSelected.date}} selected</span>
+                                        <span v-if="!hasSearch && showFilters.date">v</span>
+                                        <span v-if="!hasSearch && !showFilters.date">^</span>
+                                    </span>
+                                    <br class="clr" />
+                                </h4>
+                                <filter-list v-show="hasSearch || showFilters.date" :name="'date'" :search="search"></filter-list>
+                            </div>
+
+                            <div v-show="showTagBasedOnSearch.location" class="filter-box">
+                                <h4 @click="toggleFilter('location')" :class="{ inactive: hasSearch }">
+                                    <span class="left filter-header">Location</span>
+                                    <span class="right">
+                                        <span class="weak filter-count" v-if="!hasSearch && filtersSelected.location > 0">{{filtersSelected.location}} selected</span>
+                                        <span v-if="!hasSearch && showFilters.location">v</span>
+                                        <span v-if="!hasSearch && !showFilters.location">^</span>
+                                    </span>
+                                    <br class="clr" />
+                                </h4>
+
+
+                                <span v-show="hasSearch || showFilters.location">
+                                        <div class="location-filter-wrap">
+
+                                            <div class="filter location-filter" v-show="!hasSearch">
+                                                <ul class="selected">
+                                                    <li v-for="location in locations" v-on:click="location.s = !location.s; loadFn();" :class="{ active: location.s }">{{ location.t }}</li>
+                                                </ul>
+                                                <br class="clr" />
+                                            </div>
+
+                                            <div class="filter location-filter" v-show="hasSearch">
+                                                <ul class="selected">
+                                                    <li v-for="location in filteredLocations" v-on:click="toggleLocation(location);" :class="{ active: location.s }">{{ location.t }}</li>
+                                                </ul>
+                                                <br class="clr" />
+                                            </div>
+
+                                            <div class="location-auto-wrap" v-show="!hasSearch">
+                                                <v-autocomplete :search="locationSearch" @submit="locationSubmit" ref="locationField" placeholder="Add more cities or states"></v-autocomplete>
+                                            </div>
+                                            <br class="clr" />
+                                        </div>
+                                        <br class="clr" />
+                                </span>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

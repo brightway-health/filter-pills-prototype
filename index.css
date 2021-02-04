@@ -69,7 +69,7 @@ html {
 }
 
 #header #header-search {
-    color: blue;
+    color: #0055BD;
     float: left;
     background-color: #fff;
     border: 1px solid #ddd;
@@ -80,7 +80,7 @@ html {
 }
 
 #header #header-ask {
-    color: blue;
+    color: #0055BD;
 }
 
 #header #header-ask:hover {
@@ -116,7 +116,7 @@ html {
 }
 
 #question-nav #sort-questions-btn.pill {
-    color: blue;
+    color: #0055BD;
     background-color: #fff;
 }
 
@@ -198,14 +198,47 @@ html {
   line-height: 0;
 }
 
+.btn {
+    height: 40px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background: rgb(235, 235, 235);
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
+    border-radius: 30px;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 0 60px;
+    outline: 0;
+    cursor: pointer;
+    color: #6a6a6a;
+}
+
+.btn.active {
+    background: #0055BD;
+    color: white;
+}
+
+.btn:hover {
+    background: rgba(0, 85, 189, 0.5);
+    color: white;
+}
+
+#filter-tabs {
+    text-align: center;
+    margin-top: 35px;
+    margin-bottom: 15px;
+}
+
 .filter-box {
   background-color: #eee;
-  margin: 8px 0;
+  margin: 4px 0;
 }
 
 .filter-box h4 {
   margin: 0;
-  padding: 25px 25px;
+  padding: 20px 25px;
   width: 100%;
   box-sizing: border-box;
   font-size: 1.2em;
@@ -214,6 +247,8 @@ html {
 .filter-box h4 .filter-count {
     font-size: 0.85em;
     margin-right: 15px;
+    font-size: 14px;
+    color: #4D4D4D;
 }
 
 .filter-box h4:hover {
@@ -290,7 +325,7 @@ html {
 }
 
 .dorpdown-clear a {
-    color: blue;
+    color: #0055BD;
 }
 
 .dorpdown-clear a:hover {
@@ -443,7 +478,7 @@ html {
 }
 
 .controlBtns a {
-  color: blue;
+  color: #0055BD;
   font-weight: bold;
 }
 
@@ -530,7 +565,7 @@ html {
 }
 
 .question h2 {
-    color: blue;
+    color: #0055BD;
     margin: 0;
     font-size: 1.2em;
 }
@@ -570,7 +605,7 @@ html {
 }
 
 .hide-filters {
-    color: blue;
+    color: #0055BD;
     font-weight: bold;
     width: 100%;
     display: block;
@@ -592,7 +627,7 @@ html {
     display: block;
     width: 100%;
     text-align: center;
-    color: blue;
+    color: #0055BD;
     font-weight: bold;
 }
 
@@ -624,7 +659,7 @@ html {
     width: 10%;
     padding: 12px 0;
     box-sizing: border-box;
-    color: blue;
+    color: #0055BD;
     font-weight: bold;
     font-size: 1.4em;
     text-align: center;
@@ -645,7 +680,7 @@ html {
 }
 
 #filter-title {
-    margin: calc(60px + 0.67em) auto 40px;
+    margin: calc(50px + 0.67em) auto 40px;
     text-align: center;
     width: 77%;
     padding-bottom: 1em;
@@ -671,7 +706,7 @@ html {
     background-color: #fff;
     font-weight: bold;
     border-radius: 20px;
-    color: blue;
+    color: #0055BD;
 }
 
 #open-filter-btn:hover {
@@ -681,11 +716,11 @@ html {
 
 #view-all-link {
     display: block;
-    color: blue;
+    color: #0055BD;
     font-weight: bold;
-    margin-bottom: 40px;
+    margin-bottom: 25px;
     text-align: center;
-    margin-top: -20px;
+    margin-top: -25px;
 }
 
 #view-all-link:hover {
@@ -703,7 +738,8 @@ html {
 }
 
 .filter-header {
-    color: blue;
+    color: #0055BD;
+    font-size: 18px;
 }
 
 .filter-header:hover {
@@ -717,7 +753,7 @@ html {
 #main-col-filters-label {
     margin-top: 5px;
     display: inline-block;
-    width: 150px;
+    min-width: 150px;
     font-weight: bold;
 }
 
@@ -751,7 +787,7 @@ html {
 }
 
 #main-col-filters #reset-tags {
-    color: blue;
+    color: #0055BD;
     float: left;
     line-height: 2em;
     margin-left: 10px;
