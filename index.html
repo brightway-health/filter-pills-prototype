@@ -30,7 +30,7 @@
                             <label class="main-col-filters-label">Selected topics:</label>
                             <div>
                                 <main-col-filters :number-selected="filtersSelected.total"></main-col-filters>
-                                <span @click="resetFilters" id="reset-tags" v-show="!myTagsSelected">Reset to my tags</span>
+                                <span @click="resetFilters" id="reset-tags" v-show="!myTagsSelected">Reset to my topics</span>
                             </div>
                             <br class="clr" />
                         </div>
@@ -72,7 +72,7 @@
                     </div>
                     <div id="filters-shown" v-show="showSidebar">
                         <div id="search">
-                            <input placeholder="Search tags" id="search-box" v-model="search" />
+                            <input placeholder="Search topics" id="search-box" v-model="search" />
                             <div id="search-cancel-container">
                                 <a id="search-cancel" @click="search = ''" v-show="search != ''">x</a>
                             </div>
