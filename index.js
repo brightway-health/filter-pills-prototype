@@ -299,6 +299,80 @@ Vue.component('question', {
     }
 });
 
+const userFiltersSentenceTemplate = `
+    <div id="filters-sentence">
+        <span v-show="filters.injuryFilters.length > 0">
+            <a class="pill" v-for="filter of filters.injuryFilters" :class="{ active: filter.s }" @click="toggleFilter(filter.i)">{{ filter.t }}</a>        
+        </span>
+        
+        <span v-show="filters.userFilters.length > 0">
+            <a class="pill" v-for="filter of filters.userFilters" :class="{ active: filter.s }" @click="toggleFilter(filter.i)">{{ filter.t }}</a>        
+        </span>
+
+        <span class="text-pill" v-show="filters.userFilters.length === 0"> users </span>
+        
+        <span class="text-pill" v-show="filters.locationFilters.length > 0">in </span>
+        <span v-show="filters.locationFilters.length > 0">
+            <a class="pill" v-for="filter of filters.locationFilters" :class="{ active: filter.s }" @click="toggleLocation(filter)">{{ filter.t }}</a>        
+        </span>
+        
+        <span class="text-pill" v-show="filters.timeFilters.length > 0">injured in the last </span>
+        <span v-show="filters.timeFilters.length > 0">
+            <a class="pill" v-for="filter of filters.timeFilters" :class="{ active: filter.s }" @click="toggleFilter(filter.i)">{{ filter.t }}</a>        
+        </span>
+    </div>
+
+    <br class="clr" />
+`;
+
+Vue.component('user-filters-sentence', {
+    props: ['question', 'locations'],
+    template: userFiltersSentenceTemplate,
+    computed: {
+        filters: function () {
+            const filterByType = function (type) {
+                return filterStore.filters.filter(function (filter) {
+                    return filter.c === type && filter.s;
+                });
+            }
+
+            const injuryFilters = filterByType('injury');
+            const userFilters = filterByType('user');
+            const timeFilters = filterByType('date');
+            const recoveryFilters = filterByType('recovery');
+            const locationFilters = this.locations.filter(function (location) { return location.s });
+
+            return {
+                injuryFilters,
+                userFilters,
+                timeFilters,
+                recoveryFilters,
+                locationFilters,
+            };
+        },
+    },
+    methods: {
+        toggleFilter: function (id) {
+            this.$actions.toggleFilter(id);
+            this.loadFn();
+        },
+        toggleLocation: function(l) {
+            l.s = !l.s;
+            const cl = this.locations.find(loc => loc.t === l.t);
+            if (cl) {
+                cl.s = false;
+                this.locations = this.locations.filter(loc => loc.t !== l.t);
+            } else {
+                this.locations.push(l);
+            }
+        },
+        loadFn: function () {
+            eventHub.$emit("load");
+        }
+    },
+});
+
+
 var mainColFilterTemplate = '<span> \
 <span v-if="numberSelected === 0" id="viewing-all-q-notice">Viewing all questions</span> \
 <span v-if="numberSelected > 0"> \
@@ -507,46 +581,6 @@ let app = new Vue({
         },
         yearsChanged: function () {
             return this.sliderValue[0] != 0 || this.sliderValue[1] != 11;
-        },
-        userFiltersSentence: function () {
-            var filterByType = function (type) {
-                return filterStore.filters.filter(function (filter) {
-                    return filter.c === type && filter.s;
-                }).map(function (filter) {
-                    return filter.t;
-                });
-            }
-
-            var injuryFilters = filterByType('injury');
-            var userFilters = filterByType('user');
-            var timeFilters = filterByType('date');
-            var recoveryFilters = filterByType('recovery');
-            var locationFilters = this.locations.filter(function (location) { return location.s }).map(function (location) { return location.t });
-
-            var out = 'Asked by ';
-            if (injuryFilters.length > 0) {
-                out += injuryFilters.join(', ') + ' ';
-            }
-
-            if (userFilters.length > 0) {
-                out += userFilters.join(', ') + ' ';
-            } else {
-                out += 'users ';
-            }
-
-            if (locationFilters.length > 0) {
-                out += 'located in ' + locationFilters.join(', ') + ' ';
-            }
-
-            if (timeFilters.length > 0) {
-                out += 'injured in the last ' + timeFilters.join(', ') + ' ';
-            }
-
-            if (recoveryFilters.length > 0) {
-                out += 'who are now ' + recoveryFilters.join(', ') + ' ';
-            }
-
-            return out;
         },
         hasUserFilters: function () {
             return (filterStore.filters.find(function (filter) {
