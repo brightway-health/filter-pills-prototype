@@ -142,6 +142,22 @@ Vue.component("filter-list", {
     }
 });
 
+const noneFoundTemplate = `<div id="no-topics-found" v-show="filters.length === 0">
+    No topics found
+</div>`;
+
+Vue.component("none-found", {
+    props: ["search", "hasLocations"],
+    computed: {
+        filters: function () {
+            return this.$store.filters.filter(function (v) {
+                return ((typeof this.search === 'string' && this.search !== '' && v.t.toLowerCase().includes(this.search.toLowerCase())) || this.search === '' || this.hasLocations);
+            }.bind(this))
+        }
+    },
+    template: noneFoundTemplate,
+})
+
 var filterDorpdownTemplate = '<span> \
 <a :class="{\'dorpdown-selector\': true, active: visible }" @click="toggleDorp"> \
 <span class="dorpdown-selector-title">{{title}}</span><span class="dorpdown-selector-arrow" v-if="!visible">v</span><span class="dorpdown-selector-arrow" v-if="visible">^</span> \
@@ -385,7 +401,7 @@ Vue.component('main-col-filters', {
     computed: {
         filters: function () {
             return filterStore.filters.filter(function (filter) {
-                return !filter.u && (filter.d || filter.s);
+                return !filter.u && filter.s;
             });
         },
     },
@@ -428,7 +444,6 @@ let app = new Vue({
         },
         locationVisible: false,
         search: '',
-        topicsSelected: true,
     },
     computed: {
         hasSearch: function () {
