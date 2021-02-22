@@ -62,8 +62,7 @@
                 <div id="col2">
                     <h2 id="filter-title" @click="toggleSidebar">
                         <span style="margin-right: 5px;">View Questions By Topic</span>
-                        <span v-show="showSidebar" class="material-icons">arrow_drop_down</span>
-                        <span v-show="!showSidebar" class="material-icons">arrow_left</span>
+                        <span class="material-icons">arrow_drop_down</span>
                     </h2>
                     <br class="clr" />
                     <a @click="clearFilters" id="view-all-link" :class="{disabled: filtersSelected.total === 0}">View All Questions</a>
