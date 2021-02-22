@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="node_modules/vue-slider-component/theme/default.css" />
     <link rel="stylesheet" href="node_modules/@trevoreyre/autocomplete-vue/dist/style.css" />
     <link rel="stylesheet" href="index.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <title>Brightway Q&A Pills Filter Prototype</title>
 </head>
@@ -27,10 +28,11 @@
                     <div id="questions">
                         <h1>Browse Questions</h1>
                         <div class="main-col-filters" style="margin-bottom: 0;">
-                            <label class="main-col-filters-label">Selected topics:</label>
+                            <label v-show="filtersSelected.total > 0" class="main-col-filters-label">Selected topics:</label>
                             <div>
                                 <main-col-filters :number-selected="filtersSelected.total"></main-col-filters>
                                 <span @click="resetFilters" id="reset-tags" v-show="!myTagsSelected">Reset to my topics</span>
+                                <span @click="clearFilters" id="unset-tags" v-show="filtersSelected.total > 0">Clear all topics</span>
                             </div>
                             <br class="clr" />
                         </div>
@@ -59,11 +61,9 @@
                 <div id="col2-placeholder"></div>
                 <div id="col2">
                     <h2 id="filter-title" @click="toggleSidebar">
-                        <span class="left">View Questions By Topic</span>
-                        <span class="right">
-                            <span v-show="!showSidebar">^</span>
-                            <span v-show="showSidebar">v</span>
-                        </span>
+                        <span style="margin-right: 5px;">View Questions By Topic</span>
+                        <span v-show="showSidebar" class="material-icons">arrow_drop_down</span>
+                        <span v-show="!showSidebar" class="material-icons">arrow_left</span>
                     </h2>
                     <br class="clr" />
                     <a @click="clearFilters" id="view-all-link" :class="{disabled: filtersSelected.total === 0}">View All Questions</a>
@@ -73,20 +73,23 @@
                     <div id="filters-shown" v-show="showSidebar">
                         <div id="search">
                             <input placeholder="Search topics" id="search-box" v-model="search" />
-                            <div id="search-cancel-container">
-                                <a id="search-cancel" @click="search = ''" v-show="search != ''">x</a>
-                            </div>
+                            <button class="search-button" :disabled="!search" @click="search = ''">
+                                <span class="material-icons">clear</span>
+                            </button>
+<!--                            <button id="search-button-search" class="search-button" :disabled="!search">-->
+<!--                                <span class="material-icons">search</span>-->
+<!--                            </button>-->
                             <br class="clr" />
                         </div>
 
                         <div id="filterboxes" ref="filterboxes">
                             <div class="filter-box" v-show="showTagBasedOnSearch.symptoms">
-                                <h4 @click="toggleFilter('symptoms')" :class="{ inactive: hasSearch }"><div>
+                                <h4 @click="toggleFilter('symptoms')" :class="{ inactive: hasSearch }">
                                     <span class="left filter-header">Symptoms & daily life</span>
-                                    <span class="right">
+                                    <span class="right flex-center">
                                         <span class="weak filter-count" v-if="!hasSearch && filtersSelected.symptoms > 0">{{filtersSelected.symptoms}} selected</span>
-                                        <span v-if="!hasSearch && showFilters.symptoms">v</span>
-                                        <span v-if="!hasSearch && !showFilters.symptoms">^</span>
+                                        <span v-if="!hasSearch && showFilters.symptoms" class="material-icons">arrow_drop_down</span>
+                                        <span v-if="!hasSearch && !showFilters.symptoms" class="material-icons">arrow_left</span>
                                     </span>
                                     <br class="clr" />
                                 </h4>
@@ -95,10 +98,10 @@
                             <div class="filter-box" v-show="showTagBasedOnSearch.therapy">
                                 <h4 @click="toggleFilter('therapy')" :class="{ inactive: hasSearch }">
                                     <span class="left filter-header">Type of therapy</span>
-                                    <span class="right">
+                                    <span class="right flex-center">
                                         <span class="weak filter-count" v-if="!hasSearch && filtersSelected.therapy > 0">{{filtersSelected.therapy}} selected</span>
-                                        <span v-if="!hasSearch && showFilters.therapy">v</span>
-                                        <span v-if="!hasSearch && !showFilters.therapy">^</span>
+                                        <span v-if="!hasSearch && showFilters.therapy" class="material-icons">arrow_drop_down</span>
+                                        <span v-if="!hasSearch && !showFilters.therapy" class="material-icons">arrow_left</span>
                                     </span>
                                     <br class="clr" />
                                     </h4>
@@ -108,10 +111,10 @@
                             <div v-show="showTagBasedOnSearch.location" class="filter-box">
                                 <h4 @click="toggleFilter('location')" :class="{ inactive: hasSearch }">
                                     <span class="left filter-header">Location</span>
-                                    <span class="right">
+                                    <span class="right flex-center">
                                         <span class="weak filter-count" v-if="!hasSearch && filtersSelected.location > 0">{{filtersSelected.location}} selected</span>
-                                        <span v-if="!hasSearch && showFilters.location">v</span>
-                                        <span v-if="!hasSearch && !showFilters.location">^</span>
+                                        <span v-if="!hasSearch && showFilters.location" class="material-icons">arrow_drop_down</span>
+                                        <span v-if="!hasSearch && !showFilters.location" class="material-icons">arrow_left</span>
                                     </span>
                                     <br class="clr" />
                                 </h4>
@@ -146,10 +149,10 @@
                             <div v-show="showTagBasedOnSearch.injury" class="filter-box">
                                 <h4 @click="toggleFilter('injury')" :class="{ inactive: hasSearch }">
                                     <span class="left filter-header">Type of injury</span>
-                                    <span class="right">
+                                    <span class="right flex-center">
                                         <span class="weak filter-count" v-if="!hasSearch && filtersSelected.injury > 0">{{filtersSelected.injury}} selected</span>
-                                        <span v-if="!hasSearch && showFilters.injury">v</span>
-                                        <span v-if="!hasSearch && !showFilters.injury">^</span>
+                                        <span v-if="!hasSearch && showFilters.injury" class="material-icons">arrow_drop_down</span>
+                                        <span v-if="!hasSearch && !showFilters.injury" class="material-icons">arrow_left</span>
                                     </span>
                                     <br class="clr" />
                                 </h4>
@@ -159,10 +162,10 @@
                             <div v-show="showTagBasedOnSearch.user" class="filter-box">
                                 <h4 @click="toggleFilter('user')" :class="{ inactive: hasSearch }">
                                     <span class="left filter-header">User type</span>
-                                    <span class="right">
+                                    <span class="right flex-center">
                                         <span class="weak filter-count" v-if="!hasSearch && filtersSelected.user > 0">{{filtersSelected.user}} selected</span>
-                                        <span v-if="!hasSearch && showFilters.user">v</span>
-                                        <span v-if="!hasSearch && !showFilters.user">^</span>
+                                        <span v-if="!hasSearch && showFilters.user" class="material-icons">arrow_drop_down</span>
+                                        <span v-if="!hasSearch && !showFilters.user" class="material-icons">arrow_left</span>
                                     </span>
                                     <br class="clr" />
                                 </h4>
@@ -172,10 +175,10 @@
                             <div class="filter-box" v-show="showTagBasedOnSearch.financial">
                                 <h4 @click="toggleFilter('financial')" :class="{ inactive: hasSearch }">
                                     <span class="left filter-header">Financial</span>
-                                    <span class="right">
+                                    <span class="right flex-center">
                                         <span class="weak filter-count" v-if="!hasSearch && filtersSelected.financial > 0">{{filtersSelected.financial}} selected</span>
-                                        <span v-if="!hasSearch && showFilters.financial">v</span>
-                                        <span v-if="!hasSearch && !showFilters.financial">^</span>
+                                        <span v-if="!hasSearch && showFilters.financial" class="material-icons">arrow_drop_down</span>
+                                        <span v-if="!hasSearch && !showFilters.financial" class="material-icons">arrow_left</span>
                                     </span>
                                     <br class="clr" />
                                 </h4>
@@ -185,10 +188,10 @@
                             <div class="filter-box" v-show="showTagBasedOnSearch.nutrition">
                                 <h4 @click="toggleFilter('nutrition')" :class="{ inactive: hasSearch }">
                                     <span class="left filter-header">Nutrition</span>
-                                    <span class="right">
+                                    <span class="right flex-center">
                                         <span class="weak filter-count" v-if="!hasSearch && filtersSelected.nutrition > 0">{{filtersSelected.nutrition}} selected</span>
-                                        <span v-if="!hasSearch && showFilters.nutrition">v</span>
-                                        <span v-if="!hasSearch && !showFilters.nutrition">^</span>
+                                        <span v-if="!hasSearch && showFilters.nutrition" class="material-icons">arrow_drop_down</span>
+                                        <span v-if="!hasSearch && !showFilters.nutrition" class="material-icons">arrow_left</span>
                                     </span>
                                     <br class="clr" />
                                 </h4>
@@ -197,10 +200,10 @@
                             <div class="filter-box" v-show="showTagBasedOnSearch.medications">
                                 <h4 @click="toggleFilter('medications')" :class="{ inactive: hasSearch }">
                                     <span class="left filter-header">Medications</span>
-                                    <span class="right">
+                                    <span class="right flex-center">
                                         <span class="weak filter-count" v-if="!hasSearch && filtersSelected.medications > 0">{{filtersSelected.medications}} selected</span>
-                                        <span v-if="!hasSearch && showFilters.medications">v</span>
-                                        <span v-if="!hasSearch && !showFilters.medications">^</span>
+                                        <span v-if="!hasSearch && showFilters.medications" class="material-icons">arrow_drop_down</span>
+                                        <span v-if="!hasSearch && !showFilters.medications" class="material-icons">arrow_left</span>
                                     </span>
                                     <br class="clr" />
                                 </h4>
@@ -209,10 +212,10 @@
                             <div class="filter-box" v-show="showTagBasedOnSearch.legal" :class="{ inactive: hasSearch }">
                                 <h4 @click="toggleFilter('legal')">
                                     <span class="left filter-header">Legal</span>
-                                    <span class="right">
+                                    <span class="right flex-center">
                                         <span class="weak filter-count" v-if="!hasSearch && filtersSelected.legal > 0">{{filtersSelected.legal}} selected</span>
-                                        <span v-if="!hasSearch && showFilters.legal">v</span>
-                                        <span v-if="!hasSearch && !showFilters.legal">^</span>
+                                        <span v-if="!hasSearch && showFilters.legal" class="material-icons">arrow_drop_down</span>
+                                        <span v-if="!hasSearch && !showFilters.legal" class="material-icons">arrow_left</span>
                                     </span>
                                     <br class="clr" />
                                 </h4>
@@ -222,10 +225,10 @@
                             <div v-show="showTagBasedOnSearch.date" class="filter-box">
                                 <h4 @click="toggleFilter('date')" :class="{ inactive: hasSearch }">
                                     <span class="left filter-header">Time since injury</span>
-                                    <span class="right">
+                                    <span class="right flex-center">
                                         <span class="weak filter-count" v-if="!hasSearch && filtersSelected.date > 0">{{filtersSelected.date}} selected</span>
-                                        <span v-if="!hasSearch && showFilters.date">v</span>
-                                        <span v-if="!hasSearch && !showFilters.date">^</span>
+                                        <span v-if="!hasSearch && showFilters.date" class="material-icons">arrow_drop_down</span>
+                                        <span v-if="!hasSearch && !showFilters.date" class="material-icons">arrow_left</span>
                                     </span>
                                     <br class="clr" />
                                 </h4>

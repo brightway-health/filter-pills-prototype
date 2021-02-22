@@ -191,6 +191,11 @@ html {
 .right { float: right; }
 .weak { font-weight: normal !important; }
 
+.flex-center {
+    align-items: center;
+    display: flex;
+}
+
 .clr {
   clear: both;
   height: 0;
@@ -679,10 +684,14 @@ html {
 }
 
 #filter-title {
-    margin: calc(50px + 0.67em) auto 40px;
+    margin: calc(50px + 0.67em) auto 10px;
     text-align: center;
     width: 77%;
     padding-bottom: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
 }
 
 #filter-title:hover {
@@ -696,6 +705,10 @@ html {
 
 #filters-hidden p {
     color: #555;
+}
+
+#filters-shown {
+    padding-bottom: 80px;
 }
 
 #open-filter-btn {
@@ -768,7 +781,7 @@ html {
 .main-col-filters a {
   float: left;
   margin: 2px 5px;
-  padding: 2px 8px;
+  padding: 2px 4px 2px 8px;
   border-radius: 8px;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -793,16 +806,30 @@ html {
 .main-col-filters a.active {
     background-color: #BAD4F4;
     color: black;
+    display: flex;
+    align-items: center;
 }
 
 .main-col-filters #reset-tags {
     color: #0055BD;
     float: left;
     line-height: 2em;
-    margin-left: 10px;
+    margin-left: 15px;
 }
 
 .main-col-filters #reset-tags:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.main-col-filters #unset-tags {
+    color: #0055BD;
+    float: left;
+    line-height: 2em;
+    margin-left: 15px;
+}
+
+.main-col-filters #unset-tags:hover {
     text-decoration: underline;
     cursor: pointer;
 }
@@ -817,6 +844,15 @@ html {
 #search {
     width: 300px;
     margin: 0 auto 20px;
+    display: flex;
+}
+
+#search button:enabled {
+    cursor: pointer;
+}
+
+#search .material-icons {
+    font-size: 16px;
 }
 
 #search-box {
@@ -838,7 +874,7 @@ html {
     outline: 0;
 }
 
-#search-cancel-container {
+.search-button {
     width: 30px;
     box-sizing: border-box;
     display: block;
@@ -847,8 +883,14 @@ html {
     text-align: center;
     line-height: 40px;
     height: 40px;
+    border: none;
     border-top-right-radius: 7px;
     border-bottom-right-radius: 7px;
+}
+
+button:enabled.search-button:active, button:enabled.search-button:focus {
+    background: #87bfff;
+    outline: 0;
 }
 
 #search-cancel:hover {

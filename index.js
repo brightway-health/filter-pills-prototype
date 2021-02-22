@@ -318,23 +318,35 @@ Vue.component('question', {
 const userFiltersSentenceTemplate = `
     <div id="filters-sentence">
         <span v-show="filters.injuryFilters.length > 0">
-            <a class="pill" v-for="filter of filters.injuryFilters" :class="{ active: filter.s }" @click="toggleFilter(filter.i)">{{ filter.t }}</a>        
+            <a class="pill" v-for="filter of filters.injuryFilters" :class="{ active: filter.s }" @click="toggleFilter(filter.i)">
+                {{ filter.t }}
+                <span style="font-size: 14px; margin-left: 5px; color: #444;" class="material-icons">clear</span>
+            </a>        
         </span>
         
         <span v-show="filters.userFilters.length > 0">
-            <a class="pill" v-for="filter of filters.userFilters" :class="{ active: filter.s }" @click="toggleFilter(filter.i)">{{ filter.t }}</a>        
+            <a class="pill" v-for="filter of filters.userFilters" :class="{ active: filter.s }" @click="toggleFilter(filter.i)">
+                {{ filter.t }}
+                <span style="font-size: 14px; margin-left: 5px; color: #444;" class="material-icons">clear</span>
+            </a>        
         </span>
 
         <span class="text-pill" v-show="filters.userFilters.length === 0"> users </span>
         
         <span class="text-pill" v-show="filters.locationFilters.length > 0">in </span>
         <span v-show="filters.locationFilters.length > 0">
-            <a class="pill" v-for="filter of filters.locationFilters" :class="{ active: filter.s }" @click="toggleLocation(filter)">{{ filter.t }}</a>        
+            <a class="pill" v-for="filter of filters.locationFilters" :class="{ active: filter.s }" @click="toggleLocation(filter)">
+                {{ filter.t }}
+                <span style="font-size: 14px; margin-left: 5px; color: #444;" class="material-icons">clear</span>
+            </a>        
         </span>
         
         <span class="text-pill" v-show="filters.timeFilters.length > 0">injured in the last </span>
         <span v-show="filters.timeFilters.length > 0">
-            <a class="pill" v-for="filter of filters.timeFilters" :class="{ active: filter.s }" @click="toggleFilter(filter.i)">{{ filter.t }}</a>        
+            <a class="pill" v-for="filter of filters.timeFilters" :class="{ active: filter.s }" @click="toggleFilter(filter.i)">
+                {{ filter.t }}
+                <span style="font-size: 14px; margin-left: 5px; color: #444;" class="material-icons">clear</span>
+            </a>
         </span>
     </div>
 
@@ -392,7 +404,10 @@ Vue.component('user-filters-sentence', {
 var mainColFilterTemplate = '<span> \
 <span v-if="numberSelected === 0" id="viewing-all-q-notice">Viewing all questions</span> \
 <span v-if="numberSelected > 0"> \
-<a class="pill" v-for="filter of filters" :class="{ active: filter.s }" @click="toggleFilter(filter.i)">{{ filter.t }}</a> \
+<a class="pill" v-for="filter of filters" :class="{ active: filter.s }" @click="toggleFilter(filter.i)">\
+{{ filter.t }}\
+<span v-show="filter.s" style="font-size: 14px; margin-left: 5px; color: #444;" class="material-icons">clear</span>\
+</a> \
 </span> \
 </span>';
 
