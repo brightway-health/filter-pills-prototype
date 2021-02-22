@@ -41,6 +41,9 @@
                             <user-filters-sentence :locations="locations"></user-filters-sentence>
                         </div>
                         <div id="question-nav">
+                            <a class="pill open-filter-btn" @click="toggleSidebar" style="margin-right: 10px;"><img src="filter.png" height="16" style="margin: 0 8px 0 0;" />
+                                <span v-show="!showSidebar">View</span><span v-show="showSidebar">Hide</span> Topics
+                            </a>
                             <a class="pill" id="sort-questions-btn" @click="alert('Not in prototype')">Sort By: <span class="weak">Relevance</span><img src="down-arrow.svg" height="16" style="margin: 0 0 0 8px" /></a>
                             <h3 class="question-count">
                                 <span v-if="loading">-</span>
@@ -67,7 +70,7 @@
                     <br class="clr" />
                     <a @click="clearFilters" id="view-all-link" :class="{disabled: filtersSelected.total === 0}">View All Questions</a>
                     <div id="filters-hidden" v-show="!showSidebar">
-                        <a class="pill" id="open-filter-btn" @click="toggleSidebar"><img src="filter.png" height="16" style="margin: 0 8px 0 0" />View Topics &ndash; <span class="weak">{{filtersSelected.total}} selected</span></a>
+                        <a class="pill open-filter-btn" @click="toggleSidebar"><img src="filter.png" height="16" style="margin: 0 8px 0 0" />View Topics &ndash; <span class="weak">{{filtersSelected.total}} selected</span></a>
                     </div>
                     <div id="filters-shown" v-show="showSidebar">
                         <div id="search">
@@ -160,7 +163,7 @@
 
                             <div v-show="showTagBasedOnSearch.user" class="filter-box">
                                 <h4 @click="toggleFilter('user')" :class="{ inactive: hasSearch }">
-                                    <span class="left filter-header">User type</span>
+                                    <span class="left filter-header">Community member type</span>
                                     <span class="right flex-center">
                                         <span class="weak filter-count" v-if="!hasSearch && filtersSelected.user > 0">{{filtersSelected.user}} selected</span>
                                         <span v-if="!hasSearch && showFilters.user" class="material-icons">arrow_drop_down</span>

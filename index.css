@@ -117,7 +117,7 @@ html {
 
 #question-nav #sort-questions-btn.pill {
     color: #0055BD;
-    background-color: #fff;
+    background-color: #ddd;
 }
 
 #question-nav #sort-questions-btn.pill:hover {
@@ -711,18 +711,18 @@ html {
     padding-bottom: 80px;
 }
 
-#open-filter-btn {
-    margin-top: 0.5em;
+.open-filter-btn {
+    cursor: pointer;
     display: inline-block;
     padding: 10px 20px;
-    background-color: #fff;
+    background-color: #fff !important;
     font-weight: bold;
     border-radius: 20px;
     color: #0055BD;
 }
 
-#open-filter-btn:hover {
-    background-color: #ccc;
+.open-filter-btn:hover {
+    background-color: #ccc !important;
     cursor: pointer;
 }
 
