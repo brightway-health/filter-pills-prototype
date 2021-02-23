@@ -125,8 +125,10 @@ Vue.component("filter-list", {
     props: ["name", "search"],
     computed: {
         filters: function () {
+            const searchStrings = this.search.split(' ').filter(Boolean);
             return this.$store.filters.filter(function (v) {
-                return v.c === this.name && ((typeof this.search === 'string' && this.search !== '' && v.t.toLowerCase().includes(this.search.toLowerCase())) || this.search === '');
+                const searchStringsInTag = searchStrings.some(f => v.t.toLowerCase().includes(f.toLowerCase()));
+                return v.c === this.name && ((typeof this.search === 'string' && this.search !== '' && searchStringsInTag) || this.search === '');
             }.bind(this))
         }
     },
@@ -150,8 +152,10 @@ Vue.component("none-found", {
     props: ["search", "hasLocations"],
     computed: {
         filters: function () {
+            const searchStrings = this.search.split(' ').filter(Boolean);
             return this.$store.filters.filter(function (v) {
-                return ((typeof this.search === 'string' && this.search !== '' && v.t.toLowerCase().includes(this.search.toLowerCase())) || this.search === '' || this.hasLocations);
+                const searchStringsInTag = searchStrings.some(f => v.t.toLowerCase().includes(f.toLowerCase()));
+                return ((typeof this.search === 'string' && this.search !== '' && searchStringsInTag) || this.search === '' || this.hasLocations);
             }.bind(this))
         }
     },
@@ -479,15 +483,17 @@ let app = new Vue({
                     location: true,
                 };
             } else {
+                const searchStrings = this.search.split(' ').filter(Boolean);
+
                 var filterFn = (function (category) {
                     return (function (filter) {
                         return filter.c === category &&
-                            filter.t.toLowerCase().includes(this.search.toLowerCase());
+                            searchStrings.some(f => filter.t.toLowerCase().includes(f.toLowerCase()));
                     }).bind(this);
                 }).bind(this);
 
                 const filterLocations = l => {
-                    return l.toLowerCase().includes(this.search.toLowerCase());
+                    return searchStrings.some(f => l.toLowerCase().includes(f.toLowerCase()));
                 }
 
                 return {
@@ -506,7 +512,8 @@ let app = new Vue({
         },
         filteredLocations: function () {
             const filterLocations = l => {
-                return l.toLowerCase().includes(this.search.toLowerCase());
+                const searchStrings = this.search.split(' ').filter(Boolean);
+                return searchStrings.some(f => l.toLowerCase().includes(f.toLowerCase()));
             }
 
             if (typeof this.search === 'string' && this.search !== '') {
